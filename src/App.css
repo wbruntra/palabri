@@ -1,38 +1,69 @@
-.App {
+body {
+  background-color: #282c34;
+}
+
+.container {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  /* justify-content: center; */
+  /* font-size: calc(10px + 2vmin); */
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+input {
+  color: white;
+  font-size: 1.2em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+ul {
+  list-style-type: none;
+}
+
+.guess {
+  font-size: 1.8em;
+  margin-top: 8px;
+}
+
+.delete {
+  margin-left: 36px;
+  /* padding-bottom: 8px; */
+  cursor: pointer;
+}
+
+.box {
+  /* height: 24px;
+  width: 16px; */
+  padding: 2px 12px;
+  display: inline-block;
+  margin-left: 8px;
+  /* color: black; */
+}
+
+.green {
+  background-color: #6faf62;
+}
+
+.yellow {
+  background-color: #ddaa28;
+}
+
+.white {
+  background-color: #6a708e;
+}
+
+.ml-3 {
+  margin-left: 12px;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.error {
+  font-weight: 700;
+  color: red;
 }
