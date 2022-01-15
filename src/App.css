@@ -38,7 +38,7 @@ ul {
 .box {
   /* height: 24px;
   width: 16px; */
-  padding: 2px 12px;
+  padding: 4px 14px;
   display: inline-block;
   margin-left: 8px;
   /* color: black; */
@@ -46,6 +46,10 @@ ul {
 
 .text-white {
   color: white !important;
+}
+
+.text-gray {
+  color: #6a708e !important;
 }
 
 .green {
@@ -110,4 +114,20 @@ ul {
     display: none;
     /* background-color: lightblue; */
   }
+}
+
+ul.guess-list {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-evenly;
+}
+
+li.guess {
+  display: flex;
+  margin-bottom: .2rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
 }

@@ -202,27 +202,35 @@ function App() {
   }
 
   const renderGuess = (guess) => {
-    return guess.key.split('').map((c, i) => {
-      if (c === 'G') {
-        return (
-          <div key={`guess-${i}`} className="box green">
-            {guess.word[i]}
-          </div>
-        )
+    const getLetterClasses = (letter, key) => {
+      let classes = ['box']
+      if (key === 'G') {
+        classes.push('green')
       }
-      if (c === 'Y') {
-        return (
-          <div key={`guess-${i}`} className="box yellow">
-            {guess.word[i]}
-          </div>
-        )
+      if (key === 'Y') {
+        classes.push('yellow')
       }
-      return (
-        <div key={`guess-${i}`} className="box white">
-          {guess.word[i]}
-        </div>
-      )
-    })
+      if (key === '-') {
+        classes.push('white')
+      }
+      if (letter === '-') {
+        classes.push('invisible')
+      }
+      return classes.join(' ')
+    }
+
+    // console.log(guess)
+    return (
+      <li className="guess">
+        {guess.key.split('').map((c, i) => {
+          return (
+            <div key={`guess-${i}`} className={getLetterClasses(guess.word[i], c)}>
+              {guess.word[i]}
+            </div>
+          )
+        })}
+      </li>
+    )
   }
 
   const renderActiveGuess = () => {
@@ -284,24 +292,40 @@ function App() {
     inputEl.current.focus()
   }
 
+  const renderBlanks = () => {
+    const blanksNeeded = config.maxTries - (guesses.length + 1)
+    if (blanksNeeded <= 0) {
+      return null
+    }
+    return Array(blanksNeeded)
+      .fill(1)
+      .map((x, i) => {
+        return <div key={`guess-${i}`}>{renderGuess({ word: '------', key: '------' })}</div>
+      })
+  }
+
   const victory = guesses.length > 0 && guesses[guesses.length - 1].word === answer
 
   return (
     <>
       <div className="container">
         <h1>Palabrl {todaysNumber}</h1>
-        <ul>
+        <ul className="guess-list">
           {guesses.map((guess, i) => {
-            return (
-              <li className="guess" key={`guess-${i}`}>
-                {renderGuess(guess)}
-              </li>
-            )
+            return <div key={`guess-${i}`}>{renderGuess(guess)}</div>
           })}
+          {!isGameOver() && (
+            <div>
+              <li className="guess">{renderActiveGuess()}</li>
+            </div>
+          )}
+          {renderBlanks()}
         </ul>
-        <ul>
-          <li className="guess">{renderActiveGuess()}</li>
-        </ul>
+        {/* {!isGameOver() && (
+          <ul className="guess-list">
+            <li className="guess">{renderActiveGuess()}</li>
+          </ul>
+        )} */}
         <form onSubmit={addGuess}>
           <fieldset className="mb-0">
             <input
