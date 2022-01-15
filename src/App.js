@@ -20,13 +20,20 @@ function App() {
   const inputEl = useRef(null)
   const [answer, setAnswer] = useState('HOLLÍN')
   const [error, setError] = useState('')
-  const [victory, setVictory] = useState(false)
+  // const [victory, setVictory] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+
+  const loadGuesses = () => {
+    const savedGuesses = localStorage.getItem(`guesses-${getTodaysNumber()}`)
+    if (savedGuesses) setGuesses(JSON.parse(savedGuesses))
+  }
 
   useEffect(() => {
     const day = getTodaysNumber()
     const newAnswer = wordList[getTodaysNumber()]
     setAnswer(newAnswer)
+
+    loadGuesses()
   }, [])
 
   const reset = () => {
@@ -34,7 +41,7 @@ function App() {
     setGuesses([])
     setWord('')
     inputEl.current.focus()
-    setVictory(false)
+    // setVictory(false)
     setGameOver(false)
   }
 
@@ -86,7 +93,7 @@ function App() {
         .map((c) => 'G')
         .join('')
       savedWord = answer
-      setVictory(true)
+      // setVictory(true)
       setGameOver(true)
     } else {
       key = evaluateToString(testWord, answer)
@@ -102,10 +109,15 @@ function App() {
     setGuesses(newGuesses)
     setWord('')
 
+    console.log(JSON.stringify(newGuesses))
+
+    localStorage.setItem(`guesses-${getTodaysNumber()}`, JSON.stringify(newGuesses))
+
     inputEl.current.focus()
   }
 
   const tries = guesses.length
+  const victory = guesses.length > 0 && guesses[guesses.length - 1].word === answer
 
   return (
     <div className="container">
@@ -142,7 +154,8 @@ function App() {
           <p>Ya llevas 7 intentos. Has perdido :(</p>
         </div>
       )}
-      {gameOver && (
+      {((guesses.length > 0 && guesses[guesses.length - 1].word === answer) ||
+        guesses.length >= 6) && (
         <div>
           <p>La palabra era: {answer}</p>
           {/* <p>
