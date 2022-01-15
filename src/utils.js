@@ -6,7 +6,7 @@ import officialWords from './data/6-word-list-lg.json'
 const md5 = require('md5')
 
 const config = {
-  seed: 'favoredmeltinglyonelconsentniece',
+  seed: 'leadoutlawshusbandfiresfeeding',
 }
 
 export const getTodaysNumber = () => {
@@ -37,13 +37,24 @@ export const isWordValid = (word) => {
   return allWordsCanonical.has(word)
 }
 
-const getWords = () => {
-  const seed = config.seed
+const getRandomSample = (arr, size, seed) => {
+  const idxs = new Set()
   const rand = gen.create(seed)
+  while (idxs.size < size) {
+    idxs.add(rand.range(arr.length))
+  }
+  // console.log(idxs)
+  return Array.from(idxs).map((idx) => arr[idx])
+}
 
-  const start = Math.floor(rand.random() * (words.length - 400))
+const getWords = () => {
+  // const seed = config.seed
+  // const rand = gen.create(seed)
 
-  return words.slice(start, start + 400)
+  const ourWordList = getRandomSample(words, 400, config.seed)
+  // console.log(ourWordList)
+
+  return ourWordList
 }
 
 export const wordList = getWords()
