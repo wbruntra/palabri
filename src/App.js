@@ -116,7 +116,8 @@ function App() {
     inputEl.current.focus()
   }
 
-  const tries = guesses.length
+  // const tries = guesses.length
+  // console.log('tries', tries)
   const victory = guesses.length > 0 && guesses[guesses.length - 1].word === answer
 
   return (
@@ -137,7 +138,12 @@ function App() {
             autoFocus
             ref={inputEl}
             value={word}
-            onChange={(e) => setWord(e.target.value.toUpperCase())}
+            onChange={(e) => {
+              if (victory || guesses.length === 6) {
+                return null
+              }
+              setWord(e.target.value.toUpperCase())
+            }}
             placeholder="palabra"
           />
         </fieldset>
@@ -151,7 +157,7 @@ function App() {
       )}
       {!victory && guesses.length >= 6 && (
         <div>
-          <p>Ya llevas 7 intentos. Has perdido :(</p>
+          <p>Ya llevas 6 intentos. Has perdido :(</p>
         </div>
       )}
       {((guesses.length > 0 && guesses[guesses.length - 1].word === answer) ||
