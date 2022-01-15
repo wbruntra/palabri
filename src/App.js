@@ -153,11 +153,14 @@ function App() {
   const [error, setError] = useState('')
   const [shareClicked, setSharedClicked] = useState(false)
 
-  const isGameOver = () => {
+  const isVictory = () => {
     return (
-      (guesses.length > 0 && guesses[guesses.length - 1].word === answer) ||
-      guesses.length === config.maxTries
+      guesses.length > 0 && getCanonical(guesses[guesses.length - 1].word) === getCanonical(answer)
     )
+  }
+
+  const isGameOver = () => {
+    return isVictory() || guesses.length === config.maxTries
   }
 
   const loadGuesses = () => {
@@ -293,7 +296,8 @@ function App() {
   }
 
   const renderBlanks = () => {
-    const blanksNeeded = config.maxTries - (guesses.length + 1)
+    let blanksNeeded = config.maxTries - guesses.length
+    blanksNeeded = isGameOver() ? blanksNeeded : blanksNeeded - 1
     if (blanksNeeded <= 0) {
       return null
     }
@@ -304,7 +308,7 @@ function App() {
       })
   }
 
-  const victory = guesses.length > 0 && guesses[guesses.length - 1].word === answer
+  const victory = isVictory()
 
   return (
     <>
