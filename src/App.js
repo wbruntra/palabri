@@ -18,6 +18,7 @@ import _ from 'lodash'
 const config = {
   maxListLength: 20,
   storageKey: `guesses-${todaysNumber}-${wordsHash}`,
+  maxTries: 6,
 }
 
 const getRandomSlice = (arr, size) => {
@@ -106,12 +107,12 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
       <div className="keyboard-row">
         <div className="keyboard-key">
           <span
-            onClick={() => {
-              setWord(word.slice(0, -1))
-            }}
             className="material-icons"
+            onClick={() => {
+              addGuess()
+            }}
           >
-            keyboard_backspace
+            keyboard_return
           </span>
         </div>
 
@@ -128,14 +129,15 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
             </div>
           )
         })}
+
         <div className="keyboard-key">
           <span
-            className="material-icons"
             onClick={() => {
-              addGuess()
+              setWord(word.slice(0, -1))
             }}
+            className="material-icons"
           >
-            keyboard_return
+            backspace
           </span>
         </div>
       </div>
@@ -150,6 +152,13 @@ function App() {
   const [answer, setAnswer] = useState('HOLLÍN')
   const [error, setError] = useState('')
   const [shareClicked, setSharedClicked] = useState(false)
+
+  const isGameOver = () => {
+    return (
+      (guesses.length > 0 && guesses[guesses.length - 1].word === answer) ||
+      guesses.length === config.maxTries
+    )
+  }
 
   const loadGuesses = () => {
     const answer = wordList[todaysNumber]
@@ -231,6 +240,9 @@ function App() {
   const addGuess = (e) => {
     if (e) {
       e.preventDefault()
+    }
+    if (isGameOver()) {
+      return
     }
     const testWord = word.trim()
     if (testWord.length !== 6) {
@@ -318,8 +330,7 @@ function App() {
             <p>Ya llevas 6 intentos. Has perdido :(</p>
           </div>
         )}
-        {((guesses.length > 0 && guesses[guesses.length - 1].word === answer) ||
-          guesses.length >= 6) && (
+        {isGameOver() && (
           <div>
             <p>La palabra era: {answer}</p>
             {/* <p>
