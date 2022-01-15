@@ -5,13 +5,14 @@ body {
 .container {
   text-align: center;
   background-color: #282c34;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   /* justify-content: center; */
   /* font-size: calc(10px + 2vmin); */
   color: white;
+  max-width: 640px;
 }
 
 input {
@@ -43,16 +44,20 @@ ul {
   /* color: black; */
 }
 
+.text-white {
+  color: white !important;
+}
+
 .green {
-  background-color: #6faf62;
+  background-color: #6faf62 !important;
 }
 
 .yellow {
-  background-color: #ddaa28;
+  background-color: #ddaa28 !important;
 }
 
 .white {
-  background-color: #6a708e;
+  background-color: #6a708e !important;
 }
 
 .ml-3 {
@@ -66,4 +71,24 @@ ul {
 .error {
   font-weight: 700;
   color: red;
+}
+
+.keyboard {
+  max-width: 640px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.keyboard-row {
+  margin: 24px;
+}
+
+.keyboard-key {
+  display: inline;
+  height: 32px;
+  width: 8px;
+  margin: 8px;
+  padding: 6px 6px 8px 6px;
+  color: black;
+  background-color: white;
 }

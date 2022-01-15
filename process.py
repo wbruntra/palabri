@@ -1,8 +1,8 @@
 import json
 from os import walk
-import glob
-import string
 import codecs
+import string
+import glob
 
 # All files and directories ending with .txt and that don't begin with a dot:
 # All files and directories ending with .txt with depth of 2 folders, ignoring names beginning with a dot:
