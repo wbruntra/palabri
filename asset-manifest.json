@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/palabrl/static/css/main.53d4c26a.css",
-    "main.js": "/palabrl/static/js/main.c31f7efd.js",
+    "main.js": "/palabrl/static/js/main.12f338b2.js",
     "static/js/787.b94c06bc.chunk.js": "/palabrl/static/js/787.b94c06bc.chunk.js",
     "index.html": "/palabrl/index.html",
     "main.53d4c26a.css.map": "/palabrl/static/css/main.53d4c26a.css.map",
-    "main.c31f7efd.js.map": "/palabrl/static/js/main.c31f7efd.js.map",
+    "main.12f338b2.js.map": "/palabrl/static/js/main.12f338b2.js.map",
     "787.b94c06bc.chunk.js.map": "/palabrl/static/js/787.b94c06bc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.53d4c26a.css",
-    "static/js/main.c31f7efd.js"
+    "static/js/main.12f338b2.js"
   ]
 }
