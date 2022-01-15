@@ -168,20 +168,21 @@ function App() {
       const plainWords = JSON.parse(savedGuesses)
       const newGuesses = plainWords.map((word) => {
         let key, savedWord
-        if (word === getCanonical(answer)) {
+        if (getCanonical(word) === getCanonical(answer)) {
           key = word
             .split('')
             .map((c) => 'G')
             .join('')
           savedWord = answer
         } else {
-          key = evaluateToString(word, answer)
+          key = evaluateToString(word, getCanonical(answer))
           savedWord = word
         }
-        return {
+        const result = {
           word: savedWord,
           key,
         }
+        return result
       })
       setGuesses(newGuesses)
     }
@@ -219,7 +220,6 @@ function App() {
       return classes.join(' ')
     }
 
-    // console.log(guess)
     return (
       <li className="guess">
         {guess.key.split('').map((c, i) => {
