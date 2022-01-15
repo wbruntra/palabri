@@ -147,7 +147,7 @@ function App() {
             placeholder="palabra"
           />
         </fieldset>
-        <input className="pure-button" type="submit" value="Add Guess" />
+        <input className="pure-button" type="submit" value="Comprobar" />
       </form>
       {error !== '' && <p className="error">{error}</p>}
       {victory && (
