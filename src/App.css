@@ -80,15 +80,34 @@ ul {
 }
 
 .keyboard-row {
+  display: flex;
+  justify-content: space-around;
   margin: 24px;
 }
 
 .keyboard-key {
   display: inline;
-  height: 32px;
+  /* height: 32px;
   width: 8px;
-  margin: 8px;
-  padding: 6px 6px 8px 6px;
+  margin: 8px; */
+  padding: 8px;
   color: black;
   background-color: white;
+}
+
+.active-box {
+  display: inline;
+  height: 24px;
+  width: 16px;
+}
+
+.invisible {
+  color: #6a708e;
+}
+
+@media only screen and (max-width: 600px) {
+  form {
+    display: none;
+    /* background-color: lightblue; */
+  }
 }

@@ -50,7 +50,7 @@ const getLetterStatus = (guesses) => {
   return result
 }
 
-const Keyboard = ({ guesses }) => {
+const Keyboard = ({ guesses, word, setWord, addGuess }) => {
   const letterStatus = getLetterStatus(guesses)
 
   const getKeyClass = (key) => {
@@ -75,7 +75,13 @@ const Keyboard = ({ guesses }) => {
       <div className="keyboard-row">
         {'QWERTYUIOP'.split('').map((k, i) => {
           return (
-            <div key={`key-${k}`} className={`keyboard-key ${getKeyClass(k)}`}>
+            <div
+              onClick={() => {
+                setWord(word + k)
+              }}
+              key={`key-${k}`}
+              className={`keyboard-key ${getKeyClass(k)}`}
+            >
               {k}
             </div>
           )
@@ -84,20 +90,53 @@ const Keyboard = ({ guesses }) => {
       <div className="keyboard-row">
         {'ASDFGHJKLÑ'.split('').map((k, i) => {
           return (
-            <div key={`key-${k}`} className={`keyboard-key ${getKeyClass(k)}`}>
+            <div
+              onClick={() => {
+                setWord(word + k)
+              }}
+              key={`key-${k}`}
+              className={`keyboard-key ${getKeyClass(k)}`}
+            >
               {k}
             </div>
           )
         })}
       </div>
       <div className="keyboard-row">
+        <div className="keyboard-key">
+          <span
+            onClick={() => {
+              setWord(word.slice(0, -1))
+            }}
+            className="material-icons"
+          >
+            keyboard_backspace
+          </span>
+        </div>
+
         {'ZXCVBNM'.split('').map((k, i) => {
           return (
-            <div key={`key-${k}`} className={`keyboard-key ${getKeyClass(k)}`}>
+            <div
+              onClick={() => {
+                setWord(word + k)
+              }}
+              key={`key-${k}`}
+              className={`keyboard-key ${getKeyClass(k)}`}
+            >
               {k}
             </div>
           )
         })}
+        <div className="keyboard-key">
+          <span
+            className="material-icons"
+            onClick={() => {
+              addGuess()
+            }}
+          >
+            keyboard_return
+          </span>
+        </div>
       </div>
     </section>
   )
@@ -176,14 +215,17 @@ function App() {
   }
 
   const renderActiveGuess = () => {
-    const result = word.split('').map((c) => {
-      return <div className="box white">{c}</div>
+    const filledWord = word.concat('------').slice(0, 6)
+    const result = filledWord.split('').map((c) => {
+      return <div className={`box white ${c === '-' ? 'invisible' : ''}`}>{c}</div>
     })
     return result
   }
 
   const addGuess = (e) => {
-    e.preventDefault()
+    if (e) {
+      e.preventDefault()
+    }
     const testWord = word.trim()
     if (testWord.length !== 6) {
       setError('La palabra debe tener 6 letras')
@@ -239,6 +281,9 @@ function App() {
             )
           })}
         </ul>
+        <ul>
+          <li className="guess">{renderActiveGuess()}</li>
+        </ul>
         <form onSubmit={addGuess}>
           <fieldset className="mb-0">
             <input
@@ -277,7 +322,7 @@ function App() {
           </div>
         )}
       </div>
-      <Keyboard guesses={guesses} />
+      <Keyboard word={word} setWord={setWord} guesses={guesses} addGuess={addGuess} />
     </>
   )
 }
