@@ -75,6 +75,7 @@ ul {
 .error {
   font-weight: 700;
   color: red;
+  margin-bottom:1rem;
 }
 
 .keyboard {

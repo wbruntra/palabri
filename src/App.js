@@ -265,6 +265,7 @@ function App() {
 
     if (!isWordValid(testWord)) {
       setError(`${testWord} no es una palabra válida`)
+      setWord('')
       return
     } else {
       setError('')
@@ -308,6 +309,12 @@ function App() {
       })
   }
 
+  const changeWord = (newWord) => {
+    if (word.length <= 6) {
+      setWord(newWord)
+    }
+  }
+
   const victory = isVictory()
 
   return (
@@ -330,23 +337,26 @@ function App() {
             <li className="guess">{renderActiveGuess()}</li>
           </ul>
         )} */}
-        <form onSubmit={addGuess}>
-          <fieldset className="mb-0">
-            <input
-              autoFocus
-              ref={inputEl}
-              value={word}
-              onChange={(e) => {
-                if (victory || guesses.length === 6) {
-                  return null
-                }
-                setWord(e.target.value.toUpperCase())
-              }}
-              placeholder="palabra"
-            />
-          </fieldset>
-          <input className="pure-button" type="submit" value="Comprobar" />
-        </form>
+        {!isGameOver() && (
+          <form onSubmit={addGuess}>
+            <fieldset className="mb-0">
+              <input
+                autoFocus
+                ref={inputEl}
+                value={word}
+                onChange={(e) => {
+                  if (victory || guesses.length === 6) {
+                    return null
+                  }
+                  changeWord(e.target.value.toUpperCase())
+                }}
+                placeholder="palabra"
+              />
+            </fieldset>
+            <input className="pure-button" type="submit" value="Comprobar" />
+          </form>
+        )}
+
         {error !== '' && <p className="error">{error}</p>}
         {victory && (
           <div>
@@ -378,7 +388,7 @@ function App() {
           </div>
         )}
       </div>
-      <Keyboard word={word} setWord={setWord} guesses={guesses} addGuess={addGuess} />
+      <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
     </>
   )
 }
