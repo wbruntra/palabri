@@ -10,6 +10,7 @@ import {
   getWordHash,
   wordsHash,
   todaysNumber,
+  shareScore,
 } from './utils'
 
 import _ from 'lodash'
@@ -148,6 +149,7 @@ function App() {
   const inputEl = useRef(null)
   const [answer, setAnswer] = useState('HOLLÍN')
   const [error, setError] = useState('')
+  const [shareClicked, setSharedClicked] = useState(false)
 
   const loadGuesses = () => {
     const answer = wordList[todaysNumber]
@@ -216,8 +218,12 @@ function App() {
 
   const renderActiveGuess = () => {
     const filledWord = word.concat('------').slice(0, 6)
-    const result = filledWord.split('').map((c) => {
-      return <div className={`box white ${c === '-' ? 'invisible' : ''}`}>{c}</div>
+    const result = filledWord.split('').map((c, i) => {
+      return (
+        <div key={`active-${i}`} className={`box white ${c === '-' ? 'invisible' : ''}`}>
+          {c}
+        </div>
+      )
     })
     return result
   }
@@ -319,6 +325,17 @@ function App() {
             {/* <p>
             <button onClick={reset}>Otra vez</button>
           </p> */}
+            <p>
+              <button
+                onClick={() => {
+                  setSharedClicked(true)
+                  shareScore(guesses)
+                }}
+              >
+                Compartir
+              </button>
+            </p>
+            {shareClicked && <p>El texto ha sido copiado al portapapeles</p>}
           </div>
         )}
       </div>
