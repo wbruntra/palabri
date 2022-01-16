@@ -1,26 +1,6 @@
 import { Modal, Button, Overlay, Tooltip } from 'react-bootstrap'
 import { useState, useRef } from 'react'
-import _ from 'lodash'
-
-function Example() {
-  const [show, setShow] = useState(false)
-  const target = useRef(null)
-
-  return (
-    <>
-      <Button ref={target} onClick={() => setShow(!show)}>
-        Click me!
-      </Button>
-      <Overlay target={target.current} show={show} placement="right">
-        {(props) => (
-          <Tooltip id="overlay-example" {...props}>
-            My Tooltip
-          </Tooltip>
-        )}
-      </Overlay>
-    </>
-  )
-}
+import { sum } from 'lodash'
 
 export default function HistoryModal({
   show,
@@ -32,7 +12,7 @@ export default function HistoryModal({
 }) {
   const [showTip, setShowTip] = useState(false)
   const target = useRef(null)
-  const gamesPlayed = _.sum(gameHistory) > 0 ? _.sum(gameHistory) : 1
+  const gamesPlayed = sum(gameHistory) > 0 ? sum(gameHistory) : 1
 
   return (
     <>

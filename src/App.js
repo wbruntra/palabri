@@ -1,22 +1,16 @@
 // import './App.css'
 import { useState, useRef, useEffect } from 'react'
 import {
-  evaluate,
   getCanonical,
   evaluateToString,
   wordList,
   getTodaysNumber,
   isWordValid,
-  getWordHash,
-  wordsHash,
-  // todaysNumber,
   shareScore,
   getStorageKey,
 } from './utils'
 
-import _ from 'lodash'
 import HistoryModal from './Modal'
-import { Container, Button } from 'react-bootstrap'
 import Navbar from './Navbar'
 
 const sampleHistory = [2, 0, 3, 18, 21, 16, 8]
