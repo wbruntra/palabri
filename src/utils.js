@@ -6,7 +6,7 @@ import officialWords from './data/6-word-list-lg.json'
 const md5 = require('md5')
 
 const config = {
-  seed: 'leadoutlawshusbandfiresfeeding',
+  seed: 'swordgather',
 }
 
 export const getTodaysNumber = () => {
@@ -43,8 +43,8 @@ const getRandomSample = (arr, size, seed) => {
   while (idxs.size < size) {
     idxs.add(rand.range(arr.length))
   }
-  // console.log(idxs)
-  return Array.from(idxs).map((idx) => arr[idx])
+  const result = Array.from(idxs)
+  return result.map((idx) => arr[idx])
 }
 
 const getWords = () => {
@@ -104,16 +104,16 @@ export const evaluateToString = (guess, answer) => {
 
 export const squares = {
   '-': '⬛',
-  'Y': '🟨',
-  'G': '🟩',
+  Y: '🟨',
+  G: '🟩',
   white: '⬜',
 }
 
 export async function copyTextToClipboard(text) {
   if ('clipboard' in navigator) {
-    return await navigator.clipboard.writeText(text);
+    return await navigator.clipboard.writeText(text)
   } else {
-    return document.execCommand('copy', true, text);
+    return document.execCommand('copy', true, text)
   }
 }
 
@@ -128,4 +128,8 @@ export const shareScore = (guesses) => {
 ${results.join('\n')}`
 
   return copyTextToClipboard(shareText)
+}
+
+export const getStorageKey = () => {
+  return `guesses-${getTodaysNumber()}-${wordsHash}`
 }

@@ -9,15 +9,15 @@ import {
   isWordValid,
   getWordHash,
   wordsHash,
-  todaysNumber,
+  // todaysNumber,
   shareScore,
+  getStorageKey
 } from './utils'
 
 import _ from 'lodash'
 
 const config = {
   maxListLength: 20,
-  storageKey: `guesses-${todaysNumber}-${wordsHash}`,
   maxTries: 6,
 }
 
@@ -152,6 +152,8 @@ function App() {
   const [answer, setAnswer] = useState('HOLLÍN')
   const [error, setError] = useState('')
   const [shareClicked, setSharedClicked] = useState(false)
+  const timer = useRef(null) // we can save timer in useRef and pass it to child
+  const [todaysNumber, setTodaysNumber] = useState(getTodaysNumber())
 
   const isVictory = () => {
     return (
@@ -164,9 +166,9 @@ function App() {
   }
 
   const loadGuesses = () => {
-    const answer = wordList[todaysNumber]
+    const answer = wordList[getTodaysNumber()]
 
-    const savedGuesses = localStorage.getItem(config.storageKey)
+    const savedGuesses = localStorage.getItem(getStorageKey())
     if (savedGuesses) {
       const plainWords = JSON.parse(savedGuesses)
       const newGuesses = plainWords.map((word) => {
@@ -192,10 +194,27 @@ function App() {
   }
 
   useEffect(() => {
-    const newAnswer = wordList[todaysNumber]
+    const newAnswer = wordList[getTodaysNumber()]
     setAnswer(newAnswer)
 
     loadGuesses()
+
+    timer.current = setInterval(() => {
+      const stored = localStorage.getItem(getStorageKey())
+      // console.log(getStorageKey())
+      if (!stored) {
+        console.log('key has changed, removing all guesses')
+        localStorage.setItem(getStorageKey(), JSON.stringify([]))
+        setGuesses([])
+        setTodaysNumber(getTodaysNumber())
+        setAnswer(getTodaysNumber())
+      }
+    }, 6000)
+
+    // clear on component unmount
+    return () => {
+      clearInterval(timer.current)
+    }
   }, [])
 
   const reset = () => {
@@ -291,7 +310,7 @@ function App() {
     setGuesses(newGuesses)
     setWord('')
 
-    localStorage.setItem(config.storageKey, JSON.stringify(newGuesses.map((g) => g.word)))
+    localStorage.setItem(getStorageKey(), JSON.stringify(newGuesses.map((g) => g.word)))
 
     inputEl.current.focus()
   }
@@ -320,7 +339,7 @@ function App() {
   return (
     <>
       <div className="container">
-        <h1>Palabrl {todaysNumber}</h1>
+        <h1>Palabrl {getTodaysNumber()}</h1>
         <ul className="guess-list">
           {guesses.map((guess, i) => {
             return <div key={`guess-${i}`}>{renderGuess(guess)}</div>
