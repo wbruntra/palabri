@@ -333,7 +333,6 @@ function App() {
     return Array(blanksNeeded)
       .fill(1)
       .map((x, i) => {
-        console.log(`render blank ${i}`)
         return <div key={`guess-${i}`}>{renderGuess({ word: '------', key: '------' })}</div>
       })
   }
@@ -369,11 +368,12 @@ function App() {
             {renderBlanks()}
           </div>
         </div>
-        <div className='d-none d-md-block'>
+        <div className="d-none d-md-block">
           {!isGameOver() && (
-            <form onSubmit={addGuess}>
-              <fieldset className="mb-0">
+            <form className="entry-form" onSubmit={addGuess}>
+              <fieldset className="mb-2">
                 <input
+                  type="text"
                   autoFocus
                   ref={inputEl}
                   value={word}

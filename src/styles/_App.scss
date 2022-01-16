@@ -47,17 +47,6 @@ ul {
   width: 16px;
 }
 
-.invisible {
-  color: #6a708e;
-}
-
-@media only screen and (max-width: 600px) {
-  form {
-    display: none;
-    /* background-color: lightblue; */
-  }
-}
-
 .guess {
   display: flex;
   margin-bottom: 0.2rem;
@@ -65,4 +54,14 @@ ul {
 
 h1 {
   margin-bottom: 1rem;
+}
+
+$dark-gray: #282c34;
+
+.entry-form {
+  input[type='text'] {
+    background-color: $dark-gray;
+    font-size: 2em;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  }
 }
