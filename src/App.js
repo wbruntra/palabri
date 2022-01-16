@@ -1,4 +1,4 @@
-import './App.css'
+// import './App.css'
 import { useState, useRef, useEffect } from 'react'
 import {
   evaluate,
@@ -11,48 +11,49 @@ import {
   wordsHash,
   // todaysNumber,
   shareScore,
-  getStorageKey
+  getStorageKey,
 } from './utils'
 
 import _ from 'lodash'
+import HistoryModal from './Modal'
+import { Container, Button } from 'react-bootstrap'
+import Navbar from './Navbar'
+
+const sampleHistory = [2, 0, 3, 18, 21, 16, 8]
 
 const config = {
   maxListLength: 20,
   maxTries: 6,
-}
-
-const getRandomSlice = (arr, size) => {
-  const start = Math.floor(Math.random() * (arr.length - size))
-  return arr.slice(start, start + size)
-}
-
-const getLetterStatus = (guesses) => {
-  let result = {}
-
-  const alterStatus = (k, newStatus, previousResult) => {
-    const resultCopy = { ...previousResult }
-    if (previousResult[k] === 'G') {
-      return resultCopy
-    } else if (previousResult[k] === 'Y' && newStatus === 'G') {
-      // status can only be upgraded from Y to G, never downgraded
-      resultCopy[k] = 'G'
-    } else if (!previousResult[k]) {
-      resultCopy[k] = newStatus
-    }
-    return resultCopy
-  }
-
-  for (const guess of guesses) {
-    const key = guess.key
-    const word = guess.word
-    for (let i = 0; i < word.length; i++) {
-      result = alterStatus(word[i], key[i], result)
-    }
-  }
-  return result
+  initialHistory: [0, 0, 0, 0, 0, 0, 0],
 }
 
 const Keyboard = ({ guesses, word, setWord, addGuess }) => {
+  const getLetterStatus = (guesses) => {
+    let result = {}
+
+    const alterStatus = (k, newStatus, previousResult) => {
+      const resultCopy = { ...previousResult }
+      if (previousResult[k] === 'G') {
+        return resultCopy
+      } else if (previousResult[k] === 'Y' && newStatus === 'G') {
+        // status can only be upgraded from Y to G, never downgraded
+        resultCopy[k] = 'G'
+      } else if (!previousResult[k]) {
+        resultCopy[k] = newStatus
+      }
+      return resultCopy
+    }
+
+    for (const guess of guesses) {
+      const key = guess.key
+      const word = guess.word
+      for (let i = 0; i < word.length; i++) {
+        result = alterStatus(word[i], key[i], result)
+      }
+    }
+    return result
+  }
+
   const letterStatus = getLetterStatus(guesses)
 
   const getKeyClass = (key) => {
@@ -154,6 +155,8 @@ function App() {
   const [shareClicked, setSharedClicked] = useState(false)
   const timer = useRef(null) // we can save timer in useRef and pass it to child
   const [todaysNumber, setTodaysNumber] = useState(getTodaysNumber())
+  const [showModal, setShowModal] = useState(true)
+  const [gameHistory, setGameHistory] = useState(config.initialHistory)
 
   const isVictory = () => {
     return (
@@ -193,6 +196,16 @@ function App() {
     }
   }
 
+  const loadHistory = () => {
+    const savedHistory = localStorage.getItem('game-history')
+
+    if (savedHistory) {
+      setGameHistory(JSON.parse(savedHistory))
+    } else {
+      localStorage.setItem(JSON.parse(gameHistory))
+    }
+  }
+
   useEffect(() => {
     const newAnswer = wordList[getTodaysNumber()]
     setAnswer(newAnswer)
@@ -217,13 +230,6 @@ function App() {
     }
   }, [])
 
-  const reset = () => {
-    // setAnswer(newAnswer)
-    setGuesses([])
-    setWord('')
-    inputEl.current.focus()
-  }
-
   const renderGuess = (guess) => {
     const getLetterClasses = (letter, key) => {
       let classes = ['box']
@@ -243,7 +249,7 @@ function App() {
     }
 
     return (
-      <li className="guess">
+      <div className="guess">
         {guess.key.split('').map((c, i) => {
           return (
             <div key={`guess-${i}`} className={getLetterClasses(guess.word[i], c)}>
@@ -251,7 +257,7 @@ function App() {
             </div>
           )
         })}
-      </li>
+      </div>
     )
   }
 
@@ -268,6 +274,7 @@ function App() {
   }
 
   const addGuess = (e) => {
+    let wonGame = false
     if (e) {
       e.preventDefault()
     }
@@ -291,6 +298,7 @@ function App() {
     }
     let key, savedWord
     if (testWord === getCanonical(answer)) {
+      wonGame = true
       key = testWord
         .split('')
         .map((c) => 'G')
@@ -309,6 +317,13 @@ function App() {
     ]
     setGuesses(newGuesses)
     setWord('')
+
+    if (wonGame) {
+      const newHistory = [...gameHistory]
+      newHistory[guesses.length] = gameHistory[guesses.length] + 1
+      setGameHistory(newHistory)
+      localStorage.setItem('game-history', JSON.stringify(newHistory))
+    }
 
     localStorage.setItem(getStorageKey(), JSON.stringify(newGuesses.map((g) => g.word)))
 
@@ -338,43 +353,48 @@ function App() {
 
   return (
     <>
-      <div className="container">
-        <h1>Palabrl {getTodaysNumber()}</h1>
-        <ul className="guess-list">
-          {guesses.map((guess, i) => {
-            return <div key={`guess-${i}`}>{renderGuess(guess)}</div>
-          })}
+      <Navbar
+        todaysNumber={getTodaysNumber()}
+        toggleModal={() => {
+          setShowModal(!showModal)
+        }}
+      />
+      <div className="d-flex flex-column App">
+        {/* <h1>Palabrl {getTodaysNumber()}</h1> */}
+        <div className="App d-flex justify-content-center mb-3">
+          <div className="guess-list d-flex flex-column">
+            {guesses.map((guess, i) => {
+              return <div key={`guess-${i}`}>{renderGuess(guess)}</div>
+            })}
+            {!isGameOver() && (
+              <div>
+                <div className="guess">{renderActiveGuess()}</div>
+              </div>
+            )}
+            {renderBlanks()}
+          </div>
+        </div>
+        <div>
           {!isGameOver() && (
-            <div>
-              <li className="guess">{renderActiveGuess()}</li>
-            </div>
+            <form onSubmit={addGuess}>
+              <fieldset className="mb-0">
+                <input
+                  autoFocus
+                  ref={inputEl}
+                  value={word}
+                  onChange={(e) => {
+                    if (victory || guesses.length === 6) {
+                      return null
+                    }
+                    changeWord(e.target.value.toUpperCase())
+                  }}
+                  placeholder="palabra"
+                />
+              </fieldset>
+              <input className="btn btn-primary" type="submit" value="Comprobar" />
+            </form>
           )}
-          {renderBlanks()}
-        </ul>
-        {/* {!isGameOver() && (
-          <ul className="guess-list">
-            <li className="guess">{renderActiveGuess()}</li>
-          </ul>
-        )} */}
-        {!isGameOver() && (
-          <form onSubmit={addGuess}>
-            <fieldset className="mb-0">
-              <input
-                autoFocus
-                ref={inputEl}
-                value={word}
-                onChange={(e) => {
-                  if (victory || guesses.length === 6) {
-                    return null
-                  }
-                  changeWord(e.target.value.toUpperCase())
-                }}
-                placeholder="palabra"
-              />
-            </fieldset>
-            <input className="pure-button" type="submit" value="Comprobar" />
-          </form>
-        )}
+        </div>
 
         {error !== '' && <p className="error">{error}</p>}
         {victory && (
@@ -395,6 +415,7 @@ function App() {
           </p> */}
             <p>
               <button
+                className="btn btn-primary"
                 onClick={() => {
                   setSharedClicked(true)
                   shareScore(guesses)
@@ -406,8 +427,16 @@ function App() {
             {shareClicked && <p>El texto ha sido copiado al portapapeles</p>}
           </div>
         )}
+        <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
       </div>
-      <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
+
+      <HistoryModal
+        guesses={guesses}
+        show={showModal}
+        shareScore={shareScore}
+        handleClose={() => setShowModal(false)}
+        gameHistory={sampleHistory}
+      />
     </>
   )
 }

@@ -1,0 +1,68 @@
+.App {
+  margin: 0 auto;
+  text-align: center;
+  align-items: center;
+  color: white;
+  max-width: 640px;
+}
+
+input {
+  color: white;
+  font-size: 1.2em;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.guess {
+  font-size: 1.8em;
+  margin-top: 8px;
+}
+
+.delete {
+  margin-left: 36px;
+  /* padding-bottom: 8px; */
+  cursor: pointer;
+}
+
+.box {
+  /* height: 24px;
+    width: 16px; */
+  padding: 4px 14px;
+  display: inline-block;
+  margin-left: 8px;
+  /* color: black; */
+}
+
+.error {
+  font-weight: 700;
+  color: red;
+  margin-bottom: 1rem;
+}
+
+.active-box {
+  display: inline;
+  height: 24px;
+  width: 16px;
+}
+
+.invisible {
+  color: #6a708e;
+}
+
+@media only screen and (max-width: 600px) {
+  form {
+    display: none;
+    /* background-color: lightblue; */
+  }
+}
+
+.guess {
+  display: flex;
+  margin-bottom: 0.2rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}

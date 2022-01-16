@@ -1,0 +1,21 @@
+.keyboard {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .keyboard-row {
+    display: flex;
+    justify-content: space-around;
+    margin: 24px;
+  }
+  
+  .keyboard-key {
+      border-radius: 2px;
+    display: inline;
+    padding: 8px;
+    color: black;
+    background-color: white;
+  }
+  
