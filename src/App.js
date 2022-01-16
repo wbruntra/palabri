@@ -149,7 +149,7 @@ function App() {
   const [shareClicked, setSharedClicked] = useState(false)
   const timer = useRef(null) // we can save timer in useRef and pass it to child
   const [todaysNumber, setTodaysNumber] = useState(getTodaysNumber())
-  const [showModal, setShowModal] = useState(true)
+  const [showModal, setShowModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
 
   const isVictory = () => {
@@ -237,7 +237,7 @@ function App() {
         classes.push('white')
       }
       if (letter === '-') {
-        classes.push('invisible')
+        classes.push('text-gray')
       }
       return classes.join(' ')
     }
@@ -259,7 +259,7 @@ function App() {
     const filledWord = word.concat('------').slice(0, 6)
     const result = filledWord.split('').map((c, i) => {
       return (
-        <div key={`active-${i}`} className={`box white ${c === '-' ? 'invisible' : ''}`}>
+        <div key={`active-${i}`} className={`box white ${c === '-' ? 'text-gray' : ''}`}>
           {c}
         </div>
       )
@@ -333,6 +333,7 @@ function App() {
     return Array(blanksNeeded)
       .fill(1)
       .map((x, i) => {
+        console.log(`render blank ${i}`)
         return <div key={`guess-${i}`}>{renderGuess({ word: '------', key: '------' })}</div>
       })
   }
@@ -368,7 +369,7 @@ function App() {
             {renderBlanks()}
           </div>
         </div>
-        <div>
+        <div className='d-none d-md-block'>
           {!isGameOver() && (
             <form onSubmit={addGuess}>
               <fieldset className="mb-0">
