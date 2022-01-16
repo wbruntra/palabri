@@ -166,8 +166,9 @@ function App() {
     const answer = wordList[getTodaysNumber()]
 
     const savedGuesses = localStorage.getItem(getStorageKey())
-    if (savedGuesses) {
+    if (savedGuesses && savedGuesses.length > 0) {
       const plainWords = JSON.parse(savedGuesses)
+      console.log(plainWords)
       const newGuesses = plainWords.map((word) => {
         let key, savedWord
         if (getCanonical(word) === getCanonical(answer)) {
@@ -196,7 +197,7 @@ function App() {
     if (savedHistory) {
       setGameHistory(JSON.parse(savedHistory))
     } else {
-      localStorage.setItem(JSON.parse(gameHistory))
+      localStorage.setItem('game-history', JSON.stringify(gameHistory))
     }
   }
 
@@ -205,6 +206,7 @@ function App() {
     setAnswer(newAnswer)
 
     loadGuesses()
+    loadHistory()
 
     timer.current = setInterval(() => {
       const stored = localStorage.getItem(getStorageKey())
@@ -214,7 +216,9 @@ function App() {
         localStorage.setItem(getStorageKey(), JSON.stringify([]))
         setGuesses([])
         setTodaysNumber(getTodaysNumber())
-        setAnswer(getTodaysNumber())
+
+        const newAnswer = wordList[getTodaysNumber()]
+        setAnswer(newAnswer)
       }
     }, 6000)
 
@@ -314,7 +318,7 @@ function App() {
 
     if (wonGame) {
       const newHistory = [...gameHistory]
-      newHistory[guesses.length] = gameHistory[guesses.length] + 1
+      newHistory[newGuesses.length] = gameHistory[newGuesses.length] + 1
       setGameHistory(newHistory)
       localStorage.setItem('game-history', JSON.stringify(newHistory))
     }
@@ -338,8 +342,10 @@ function App() {
   }
 
   const changeWord = (newWord) => {
-    if (word.length <= 6) {
+    if (newWord.length <= 6) {
       setWord(newWord)
+    } else {
+      setWord(newWord.slice(0, 6))
     }
   }
 
@@ -430,7 +436,7 @@ function App() {
         show={showModal}
         shareScore={shareScore}
         handleClose={() => setShowModal(false)}
-        gameHistory={sampleHistory}
+        gameHistory={gameHistory}
       />
     </>
   )

@@ -1,7 +1,11 @@
 import _ from 'lodash'
 import gen from 'random-seed'
-import words from './data/6-word-list.json'
-import officialWords from './data/6-word-list-lg.json'
+
+// import words from './data/6-word-list.json'
+import words from './data/answers-word-list.json'
+
+import officialWords from './data/valid-word-list-xl.json'
+// import officialWords from './data/6-word-list-lg.json'
 
 const md5 = require('md5')
 
