@@ -362,7 +362,6 @@ function App() {
         }}
       />
       <div className="d-flex justify-content-between flex-column App flex-grow-1">
-        {/* <h1>Palabrl {getTodaysNumber()}</h1> */}
         <div className="d-flex justify-content-center mb-3">
           <div className="guess-list d-flex flex-column">
             {guesses.map((guess, i) => {

@@ -128,7 +128,7 @@ export const shareScore = (guesses) => {
     const key = guess.key.split('').map((k) => squares[k])
     results.push(key.join(''))
   }
-  const shareText = `Palabrl ${todaysNumber} ${guesses.length}/6
+  const shareText = `Palabrí ${todaysNumber} ${guesses.length}/6
   
 ${results.join('\n')}`
 
