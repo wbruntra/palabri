@@ -1,3 +1,5 @@
+$app-bg-color:#282c34;
+
 body {
   background-color: #282c34;
   min-height: 100vh;
@@ -18,6 +20,10 @@ input {
 
 .text-gray {
   color: #6a708e !important;
+}
+
+.text-bgcolor {
+  color: $app-bg-color;
 }
 
 .green {

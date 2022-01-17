@@ -351,7 +351,7 @@ function App() {
   const victory = isVictory()
 
   return (
-    <>
+    <div className="d-flex flex-column justify-content-center main">
       <Navbar
         todaysNumber={getTodaysNumber()}
         toggleModal={() => {
@@ -361,9 +361,9 @@ function App() {
           setShowHelpModal(true)
         }}
       />
-      <div className="d-flex flex-column App">
+      <div className="d-flex justify-content-between flex-column App flex-grow-1">
         {/* <h1>Palabrl {getTodaysNumber()}</h1> */}
-        <div className="App d-flex justify-content-center mb-3">
+        <div className="d-flex justify-content-center mb-3">
           <div className="guess-list d-flex flex-column">
             {guesses.map((guess, i) => {
               return (
@@ -380,61 +380,69 @@ function App() {
             {renderBlanks()}
           </div>
         </div>
-        <div className="d-none d-md-block">
-          {!isGameOver() && (
-            <form className="entry-form" onSubmit={addGuess}>
-              <fieldset className="mb-2">
-                <input
-                  type="text"
-                  autoFocus
-                  ref={inputEl}
-                  value={word}
-                  onChange={(e) => {
-                    if (victory || guesses.length === 6) {
-                      return null
-                    }
-                    changeWord(e.target.value.toUpperCase())
-                  }}
-                  placeholder="palabra"
-                />
-              </fieldset>
-              <input className="btn btn-primary" type="submit" value="Comprobar" />
-            </form>
-          )}
-        </div>
+        {!isGameOver() && (
+          <>
+            <div className="d-none d-md-block">
+              <form className="entry-form mb-3" onSubmit={addGuess}>
+                <fieldset className="mb-2">
+                  <input
+                    type="text"
+                    autoFocus
+                    ref={inputEl}
+                    value={word}
+                    onChange={(e) => {
+                      if (victory || guesses.length === 6) {
+                        return null
+                      }
+                      changeWord(e.target.value.toUpperCase())
+                    }}
+                    placeholder="palabra"
+                  />
+                </fieldset>
+                <input className="btn btn-primary" type="submit" value="Comprobar" />
+              </form>
+            </div>
 
-        {error !== '' && <p className="error">{error}</p>}
-        {victory && (
-          <div>
-            <p>Felicidades! Has ganado.</p>
-          </div>
+            {error !== '' ? (
+              <p className="error">{error}</p>
+            ) : (
+              <p className="text-bgcolor">No error right now</p>
+            )}
+          </>
         )}
-        {!victory && guesses.length >= 6 && (
-          <div>
-            <p>Ya llevas 6 intentos. Has perdido :(</p>
-          </div>
-        )}
+
         {isGameOver() && (
-          <div>
-            <p>La palabra era: {answer}</p>
-            {/* <p>
-            <button onClick={reset}>Otra vez</button>
-          </p> */}
-            <p>
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  setSharedClicked(true)
-                  shareScore(guesses)
-                }}
-              >
-                Compartir
-              </button>
-            </p>
-            {shareClicked && <p>El texto ha sido copiado al portapapeles</p>}
-          </div>
+          <>
+            <div>
+              {victory && (
+                <div>
+                  <p>Felicidades! Has ganado.</p>
+                </div>
+              )}
+              {!victory && guesses.length >= 6 && (
+                <div>
+                  <p>Ya llevas 6 intentos. Has perdido :(</p>
+                </div>
+              )}
+              <p>La palabra era: {answer}</p>
+              <p>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setSharedClicked(true)
+                    shareScore(guesses)
+                  }}
+                >
+                  Compartir
+                </button>
+              </p>
+              {shareClicked && <p>El texto ha sido copiado al portapapeles</p>}
+            </div>
+          </>
         )}
-        <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
+        <div className="">
+          <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
+        </div>
       </div>
 
       <HistoryModal
@@ -446,7 +454,7 @@ function App() {
         gameOver={isGameOver()}
       />
       <HelpModal show={showHelpModal} handleClose={() => setShowHelpModal(false)} />
-    </>
+    </div>
   )
 }
 
