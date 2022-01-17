@@ -10,8 +10,10 @@ import {
   getStorageKey,
 } from './utils'
 
-import HistoryModal from './Modal'
+import HistoryModal from './HistoryModal'
 import Navbar from './Navbar'
+import Guess from './Guess'
+import HelpModal from './HelpModal'
 
 const sampleHistory = [2, 0, 3, 18, 21, 16, 8]
 
@@ -69,7 +71,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
 
   return (
     <section className="keyboard">
-      <div className="keyboard-row">
+      <div className="keyboard-row d-flex justify-content-between">
         {'QWERTYUIOP'.split('').map((k, i) => {
           return (
             <div
@@ -84,7 +86,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
           )
         })}
       </div>
-      <div className="keyboard-row">
+      <div className="keyboard-row d-flex justify-content-around">
         {'ASDFGHJKLÑ'.split('').map((k, i) => {
           return (
             <div
@@ -99,7 +101,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
           )
         })}
       </div>
-      <div className="keyboard-row">
+      <div className="keyboard-row d-flex justify-content-evenly">
         <div className="keyboard-key">
           <span
             className="material-icons"
@@ -150,6 +152,7 @@ function App() {
   const timer = useRef(null) // we can save timer in useRef and pass it to child
   const [todaysNumber, setTodaysNumber] = useState(getTodaysNumber())
   const [showModal, setShowModal] = useState(false)
+  const [showHelpModal, setShowHelpModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
 
   const isVictory = () => {
@@ -197,6 +200,7 @@ function App() {
     if (savedHistory) {
       setGameHistory(JSON.parse(savedHistory))
     } else {
+      setShowHelpModal(true)
       localStorage.setItem('game-history', JSON.stringify(gameHistory))
     }
   }
@@ -260,18 +264,6 @@ function App() {
         })}
       </div>
     )
-  }
-
-  const renderActiveGuess = () => {
-    const filledWord = word.concat('------').slice(0, 6)
-    const result = filledWord.split('').map((c, i) => {
-      return (
-        <div key={`active-${i}`} className={`box white ${c === '-' ? 'text-gray' : ''}`}>
-          {c}
-        </div>
-      )
-    })
-    return result
   }
 
   const addGuess = (e) => {
@@ -340,7 +332,11 @@ function App() {
     return Array(blanksNeeded)
       .fill(1)
       .map((x, i) => {
-        return <div key={`guess-${i}`}>{renderGuess({ word: '------', key: '------' })}</div>
+        return (
+          <div key={`guess-${i}`}>
+            <Guess guess={{ word: '------', key: '------' }} />
+          </div>
+        )
       })
   }
 
@@ -361,17 +357,24 @@ function App() {
         toggleModal={() => {
           setShowModal(!showModal)
         }}
+        toggleHelpModal={() => {
+          setShowHelpModal(true)
+        }}
       />
       <div className="d-flex flex-column App">
         {/* <h1>Palabrl {getTodaysNumber()}</h1> */}
         <div className="App d-flex justify-content-center mb-3">
           <div className="guess-list d-flex flex-column">
             {guesses.map((guess, i) => {
-              return <div key={`guess-${i}`}>{renderGuess(guess)}</div>
+              return (
+                <div key={`guess-${i}`}>
+                  <Guess guess={guess} />
+                </div>
+              )
             })}
             {!isGameOver() && (
               <div>
-                <div className="guess">{renderActiveGuess()}</div>
+                <Guess guess={{ word: word.concat('------').slice(0, 6), key: '------' }} />
               </div>
             )}
             {renderBlanks()}
@@ -440,7 +443,9 @@ function App() {
         shareScore={shareScore}
         handleClose={() => setShowModal(false)}
         gameHistory={gameHistory}
+        gameOver={isGameOver()}
       />
+      <HelpModal show={showHelpModal} handleClose={() => setShowHelpModal(false)} />
     </>
   )
 }
