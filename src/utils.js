@@ -27,6 +27,7 @@ export const getCanonical = (s) => {
     Í: 'I',
     Ó: 'O',
     Ú: 'U',
+    Ü: 'U',
   }
   _.forEach(accents, (plainVowel, accented) => {
     canonical = canonical.replace(accented, plainVowel)

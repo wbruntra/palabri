@@ -208,11 +208,10 @@ function App() {
     loadGuesses()
     loadHistory()
 
-    timer.current = setInterval(() => {
+    const checkForKey = () => {
       const stored = localStorage.getItem(getStorageKey())
-      // console.log(getStorageKey())
       if (!stored) {
-        console.log('key has changed, removing all guesses')
+        console.log('no valid key, removing all guesses')
         localStorage.setItem(getStorageKey(), JSON.stringify([]))
         setGuesses([])
         setTodaysNumber(getTodaysNumber())
@@ -220,7 +219,11 @@ function App() {
         const newAnswer = wordList[getTodaysNumber()]
         setAnswer(newAnswer)
       }
-    }, 6000)
+    }
+
+    checkForKey()
+
+    timer.current = setInterval(checkForKey, 6000)
 
     // clear on component unmount
     return () => {
