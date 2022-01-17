@@ -7,7 +7,7 @@ export default function MyNavbar({ todaysNumber, toggleModal, toggleHelpModal })
         <Container>
           <Navbar.Brand href="#home">Palabrí {todaysNumber}</Navbar.Brand>
           <Nav className="justify-content-end">
-            <Navbar.Text className="" onClick={toggleModal} className="clickable">
+            <Navbar.Text onClick={toggleModal} className="clickable">
               <span className="material-icons me-3">equalizer</span>
             </Navbar.Text>
             <Navbar.Text onClick={toggleHelpModal} className="clickable">

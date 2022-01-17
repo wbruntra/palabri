@@ -171,7 +171,6 @@ function App() {
     const savedGuesses = localStorage.getItem(getStorageKey())
     if (savedGuesses && savedGuesses.length > 0) {
       const plainWords = JSON.parse(savedGuesses)
-      console.log(plainWords)
       const newGuesses = plainWords.map((word) => {
         let key, savedWord
         if (getCanonical(word) === getCanonical(answer)) {
@@ -351,7 +350,7 @@ function App() {
   const victory = isVictory()
 
   return (
-    <div className="d-flex flex-column justify-content-center main">
+    <div className="d-flex flex-column main">
       <Navbar
         todaysNumber={getTodaysNumber()}
         toggleModal={() => {
@@ -361,7 +360,7 @@ function App() {
           setShowHelpModal(true)
         }}
       />
-      <div className="d-flex justify-content-between flex-column App flex-grow-1">
+      <div className="d-flex flex-column App">
         <div className="d-flex justify-content-center mb-3">
           <div className="guess-list d-flex flex-column">
             {guesses.map((guess, i) => {

@@ -49,13 +49,15 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RP7FLVZQMH"></script>
     <script>
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
+      if (!window.location.host.startsWith('localhost')) {
+        window.dataLayer = window.dataLayer || []
+        function gtag() {
+          dataLayer.push(arguments)
+        }
+        gtag('js', new Date())
 
-      gtag('config', 'G-RP7FLVZQMH')
+        gtag('config', 'G-RP7FLVZQMH')
+      }
     </script>
 
     <title>Palabrí</title>
