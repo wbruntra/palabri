@@ -7,7 +7,9 @@ import {
   getTodaysNumber,
   isWordValid,
   shareScore,
+  copyWithWebShare,
   wordsHash,
+  getShareText,
 } from './utils'
 
 import HistoryModal from './HistoryModal'
@@ -409,7 +411,10 @@ function App() {
                   className="btn btn-primary"
                   onClick={() => {
                     setSharedClicked(true)
-                    shareScore(guesses)
+                    const shareText = getShareText(guesses)
+                    copyWithWebShare(shareText)
+
+                    // shareScore(guesses)
                   }}
                 >
                   Compartir

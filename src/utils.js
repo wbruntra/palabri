@@ -122,6 +122,48 @@ export async function copyTextToClipboard(text) {
   }
 }
 
+export async function copyWithWebShare(text) {
+  if (navigator.share) {
+    return navigator
+      .share({
+        text,
+      })
+      .then(() => {
+        return 'El texto ha sido copiado al portapapeles'
+      })
+      .catch((err) => {
+        return 'No se ha podido compartir :('
+      })
+  } else if (navigator.clipboard) {
+    return navigator.clipboard.writeText(text)
+  } else {
+    console.log('No navigator share available')
+    return 'No se ha podido compartir :('
+  }
+
+  // shareButton.addEventListener('click', (event) => {
+  // })
+
+  // if ('clipboard' in navigator) {
+  //   return await navigator.clipboard.writeText(text)
+  // } else {
+  //   return document.execCommand('copy', true, text)
+  // }
+}
+
+export const getShareText = (guesses) => {
+  const results = []
+  for (const guess of guesses) {
+    const key = guess.key.split('').map((k) => squares[k])
+    results.push(key.join(''))
+  }
+  const shareText = `Palabrí ${todaysNumber} ${guesses.length}/6
+  
+${results.join('\n')}`
+
+  return shareText
+}
+
 export const shareScore = (guesses) => {
   const results = []
   for (const guess of guesses) {
