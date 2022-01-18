@@ -129,7 +129,7 @@ export async function copyWithWebShare(text) {
         text,
       })
       .then(() => {
-        return 'El texto ha sido copiado al portapapeles'
+        return 'SUCCESS'
       })
       .catch((err) => {
         return 'No se ha podido compartir :('
@@ -137,18 +137,10 @@ export async function copyWithWebShare(text) {
   } else if (navigator.clipboard) {
     return navigator.clipboard.writeText(text)
   } else {
+    return 'SUCCESS'
     console.log('No navigator share available')
     return 'No se ha podido compartir :('
   }
-
-  // shareButton.addEventListener('click', (event) => {
-  // })
-
-  // if ('clipboard' in navigator) {
-  //   return await navigator.clipboard.writeText(text)
-  // } else {
-  //   return document.execCommand('copy', true, text)
-  // }
 }
 
 export const getShareText = (guesses) => {

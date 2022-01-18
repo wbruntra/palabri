@@ -170,6 +170,7 @@ function App() {
   const [showModal, setShowModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
+  const [shareError, setShareError] = useState('')
 
   const [answer, setAnswer] = useState(wordList[getWordIndex()])
 
@@ -412,15 +413,17 @@ function App() {
                   onClick={() => {
                     setSharedClicked(true)
                     const shareText = getShareText(guesses)
-                    copyWithWebShare(shareText)
-
-                    // shareScore(guesses)
+                    copyWithWebShare(shareText).then((msg) => {
+                      if (msg !== 'SUCCESS') {
+                        setShareError(msg)
+                      }
+                    })
                   }}
                 >
                   Compartir
                 </button>
               </p>
-              {shareClicked && <p>El texto ha sido copiado al portapapeles</p>}
+              {shareClicked && <p className="error">{shareError}</p>}
             </div>
           </>
         )}
