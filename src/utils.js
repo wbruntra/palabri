@@ -150,7 +150,7 @@ export const getShareText = (guesses) => {
     results.push(key.join(''))
   }
   const shareText = `Palabrí ${todaysNumber} ${guesses.length}/6
-  
+
 ${results.join('\n')}`
 
   return shareText
