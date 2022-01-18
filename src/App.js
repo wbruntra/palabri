@@ -246,37 +246,6 @@ function App() {
     }
   }, [])
 
-  const renderGuess = (guess) => {
-    const getLetterClasses = (letter, key) => {
-      let classes = ['box']
-      if (key === 'G') {
-        classes.push('green')
-      }
-      if (key === 'Y') {
-        classes.push('yellow')
-      }
-      if (key === '-') {
-        classes.push('white')
-      }
-      if (letter === '-') {
-        classes.push('text-gray')
-      }
-      return classes.join(' ')
-    }
-
-    return (
-      <div className="guess">
-        {guess.key.split('').map((c, i) => {
-          return (
-            <div key={`guess-${i}`} className={getLetterClasses(guess.word[i], c)}>
-              {guess.word[i]}
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
-
   const addGuess = (e) => {
     let wonGame = false
     if (e) {

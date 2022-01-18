@@ -1,0 +1,10 @@
+@keyframes jump {
+    0% { transform: translate(0%, 0%) scale(1, 1); }
+    40% { transform: translate(0%, -40%) rotate(10deg); }
+    // 50% { transform: translate(0%, -40%) scale(1, 1); }
+    // 50% { transform: translate(0%, -40%) rotate(-15deg); }
+    // 55% { transform: translate(0%, -40%) rotate(15deg); }
+    60% { transform: translate(0%, -40%) rotate(-10deg); }
+    100% { transform: translate(0%, 0%) scale(1, 1); }
+}
+
