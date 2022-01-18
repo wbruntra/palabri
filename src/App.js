@@ -7,7 +7,9 @@ import {
   getTodaysNumber,
   isWordValid,
   shareScore,
+  copyWithWebShare,
   wordsHash,
+  getShareText,
 } from './utils'
 
 import HistoryModal from './HistoryModal'
@@ -168,6 +170,7 @@ function App() {
   const [showModal, setShowModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
+  const [shareError, setShareError] = useState('')
 
   const [answer, setAnswer] = useState(wordList[getWordIndex()])
 
@@ -409,13 +412,18 @@ function App() {
                   className="btn btn-primary"
                   onClick={() => {
                     setSharedClicked(true)
-                    shareScore(guesses)
+                    const shareText = getShareText(guesses)
+                    copyWithWebShare(shareText).then((msg) => {
+                      if (msg !== 'SUCCESS') {
+                        setShareError(msg)
+                      }
+                    })
                   }}
                 >
                   Compartir
                 </button>
               </p>
-              {shareClicked && <p>El texto ha sido copiado al portapapeles</p>}
+              {shareClicked && <p className="error">{shareError}</p>}
             </div>
           </>
         )}
