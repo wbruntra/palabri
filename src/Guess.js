@@ -23,9 +23,8 @@ export default function Guess({ guess }) {
       {guess.key.split('').map((c, i) => {
         const styles = {}
         if (isWinner) {
-          styles.animation = `bounce 1s`
-          // styles.animation = `0.7s ease ${0.12 * i}s normal none running bounce`
-          // styles.animationDelay = `${0.08 * i}s !important`
+          styles.animation = `jump .35s`
+          styles.animationDelay = `${0.08 * i}s`
         }
         return (
           <div key={`guess-${i}`} style={styles} className={getLetterClasses(guess.word[i], c)}>
