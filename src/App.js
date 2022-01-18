@@ -7,15 +7,13 @@ import {
   getTodaysNumber,
   isWordValid,
   shareScore,
-  getStorageKey,
+  wordsHash,
 } from './utils'
 
 import HistoryModal from './HistoryModal'
 import Navbar from './Navbar'
 import Guess from './Guess'
 import HelpModal from './HelpModal'
-
-const sampleHistory = [2, 0, 3, 18, 21, 16, 8]
 
 const config = {
   maxListLength: 20,
@@ -142,18 +140,36 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
   )
 }
 
+const getWordIndex = () => {
+  if (!window.location.host.startsWith('localhost')) {
+    return getTodaysNumber()
+  }
+  let chunk
+  let param = new URL(document.location).searchParams.get('chunk')
+  if (param) {
+    chunk = parseInt(param)
+  }
+  const wordIndex = chunk ? parseInt(param) : getTodaysNumber()
+  return wordIndex
+}
+
+const getStorageKey = () => {
+  const wordIndex = getWordIndex()
+  return `guesses-${wordIndex}-${wordsHash}`
+}
+
 function App() {
   const [guesses, setGuesses] = useState([])
   const [word, setWord] = useState('')
   const inputEl = useRef(null)
-  const [answer, setAnswer] = useState('HOLLÍN')
   const [error, setError] = useState('')
   const [shareClicked, setSharedClicked] = useState(false)
-  const timer = useRef(null) // we can save timer in useRef and pass it to child
-  const [todaysNumber, setTodaysNumber] = useState(getTodaysNumber())
+  const timer = useRef(null)
   const [showModal, setShowModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
+
+  const [answer, setAnswer] = useState(wordList[getWordIndex()])
 
   const isVictory = () => {
     return (
@@ -165,10 +181,8 @@ function App() {
     return isVictory() || guesses.length === config.maxTries
   }
 
-  const loadGuesses = () => {
-    const answer = wordList[getTodaysNumber()]
-
-    const savedGuesses = localStorage.getItem(getStorageKey())
+  const loadGuesses = (storageKey, answer) => {
+    const savedGuesses = localStorage.getItem(storageKey)
     if (savedGuesses && savedGuesses.length > 0) {
       const plainWords = JSON.parse(savedGuesses)
       const newGuesses = plainWords.map((word) => {
@@ -205,28 +219,26 @@ function App() {
   }
 
   useEffect(() => {
-    const newAnswer = wordList[getTodaysNumber()]
-    setAnswer(newAnswer)
-
-    loadGuesses()
+    loadGuesses(getStorageKey(), answer)
     loadHistory()
 
-    const checkForKey = () => {
-      const stored = localStorage.getItem(getStorageKey())
+    const checkGuessesValid = () => {
+      const storageKey = getStorageKey()
+      const stored = localStorage.getItem(storageKey)
       if (!stored) {
         console.log('no valid key, removing all guesses')
-        localStorage.setItem(getStorageKey(), JSON.stringify([]))
+        localStorage.setItem(storageKey, JSON.stringify([]))
         setGuesses([])
-        setTodaysNumber(getTodaysNumber())
+        // setTodaysNumber(getWordIndex())
 
-        const newAnswer = wordList[getTodaysNumber()]
+        const newAnswer = wordList[getWordIndex()]
         setAnswer(newAnswer)
       }
     }
 
-    checkForKey()
+    checkGuessesValid()
 
-    timer.current = setInterval(checkForKey, 6000)
+    timer.current = setInterval(checkGuessesValid, 6000)
 
     // clear on component unmount
     return () => {
@@ -352,7 +364,7 @@ function App() {
   return (
     <div className="d-flex flex-column main">
       <Navbar
-        todaysNumber={getTodaysNumber()}
+        todaysNumber={getWordIndex()}
         toggleModal={() => {
           setShowModal(!showModal)
         }}

@@ -10,7 +10,7 @@ import officialWords from './data/valid-word-list-xl.json'
 const md5 = require('md5')
 
 const config = {
-  seed: 'swordgather',
+  seed: 'cutsleaptbathed',
 }
 
 export const getTodaysNumber = () => {
@@ -63,7 +63,7 @@ const getWords = () => {
 }
 
 export const wordList = getWords()
-export const wordsHash = md5(JSON.stringify(wordList)).slice(0, 9)
+export const wordsHash = md5(JSON.stringify(wordList)).slice(0, 5)
 export const todaysNumber = getTodaysNumber()
 
 export const getWordHash = () => {
