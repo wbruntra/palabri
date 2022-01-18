@@ -132,7 +132,11 @@ export async function copyWithWebShare(text) {
         return 'SUCCESS'
       })
       .catch((err) => {
-        return 'No se ha podido compartir :('
+        if (err.name === 'AbortError') {
+          return 'SUCCESS'
+        } else {
+          return 'No se ha podido compartir :('
+        }
       })
   } else if (navigator.clipboard) {
     return navigator.clipboard.writeText(text)
