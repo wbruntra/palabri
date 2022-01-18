@@ -1,6 +1,7 @@
 import { Modal, Button, Overlay, Tooltip } from 'react-bootstrap'
 import { useState, useRef } from 'react'
 import { sum } from 'lodash'
+import { getShareText, copyWithWebShare } from './utils'
 
 export default function HistoryModal({
   show,
@@ -14,6 +15,7 @@ export default function HistoryModal({
   const [showTip, setShowTip] = useState(false)
   const target = useRef(null)
   const gamesPlayed = sum(gameHistory) > 0 ? sum(gameHistory) : 1
+  const [tipText, setTipText] = useState('Copied!')
 
   return (
     <>
@@ -55,12 +57,19 @@ export default function HistoryModal({
               variant="primary"
               ref={target}
               onClick={() => {
-                setShowTip(true)
                 shareScore(guesses)
 
-                setTimeout(() => {
-                  setShowTip(false)
-                }, 1400)
+                const shareText = getShareText(guesses)
+                copyWithWebShare(shareText).then((msg) => {
+                  setShowTip(true)
+
+                  if (msg !== 'SUCCESS') {
+                    setTipText('Error')
+                  }
+                  setTimeout(() => {
+                    setShowTip(false)
+                  }, 1400)
+                })
               }}
             >
               Compartir
