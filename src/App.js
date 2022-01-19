@@ -16,6 +16,7 @@ import HistoryModal from './HistoryModal'
 import Navbar from './Navbar'
 import Guess from './Guess'
 import HelpModal from './HelpModal'
+import GameOverModal from './WinnerModal'
 
 const config = {
   maxListLength: 20,
@@ -171,17 +172,18 @@ function App() {
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
   const [shareError, setShareError] = useState('')
+  const [showGameOverModal, setShowGameOverModal] = useState(false)
 
   const [answer, setAnswer] = useState(wordList[getWordIndex()])
 
-  const isVictory = () => {
+  const isVictory = (guesses) => {
     return (
       guesses.length > 0 && getCanonical(guesses[guesses.length - 1].word) === getCanonical(answer)
     )
   }
 
-  const isGameOver = () => {
-    return isVictory() || guesses.length === config.maxTries
+  const isGameOver = (guesses) => {
+    return isVictory(guesses) || guesses.length === config.maxTries
   }
 
   const loadGuesses = (storageKey, answer) => {
@@ -207,6 +209,11 @@ function App() {
         return result
       })
       setGuesses(newGuesses)
+      if (isGameOver(newGuesses)) {
+        setTimeout(() => {
+          setShowGameOverModal(true)
+        }, 1500)
+      }
     }
   }
 
@@ -254,7 +261,7 @@ function App() {
     if (e) {
       e.preventDefault()
     }
-    if (isGameOver()) {
+    if (isGameOver(guesses)) {
       return
     }
     const testWord = word.trim()
@@ -294,6 +301,12 @@ function App() {
     setGuesses(newGuesses)
     setWord('')
 
+    if (isGameOver(newGuesses)) {
+      setTimeout(() => {
+        setShowGameOverModal(true)
+      }, 4500)
+    }
+
     if (wonGame) {
       const newHistory = [...gameHistory]
       newHistory[newGuesses.length] = gameHistory[newGuesses.length] + 1
@@ -308,7 +321,7 @@ function App() {
 
   const renderBlanks = () => {
     let blanksNeeded = config.maxTries - guesses.length
-    blanksNeeded = isGameOver() ? blanksNeeded : blanksNeeded - 1
+    blanksNeeded = isGameOver(guesses) ? blanksNeeded : blanksNeeded - 1
     if (blanksNeeded <= 0) {
       return null
     }
@@ -331,7 +344,7 @@ function App() {
     }
   }
 
-  const victory = isVictory()
+  const victory = isVictory(guesses)
 
   return (
     <div className="d-flex flex-column main">
@@ -354,7 +367,7 @@ function App() {
                 </div>
               )
             })}
-            {!isGameOver() && (
+            {!isGameOver(guesses) && (
               <div>
                 <Guess guess={{ word: word.concat('------').slice(0, 6), key: '------' }} />
               </div>
@@ -362,7 +375,7 @@ function App() {
             {renderBlanks()}
           </div>
         </div>
-        {!isGameOver() && (
+        {!isGameOver(guesses) && (
           <>
             <div className="d-none d-md-block">
               <form className="entry-form mb-3" onSubmit={addGuess}>
@@ -393,7 +406,7 @@ function App() {
           </>
         )}
 
-        {isGameOver() && (
+        {isGameOver(guesses) && (
           <>
             <div>
               {victory && (
@@ -438,9 +451,10 @@ function App() {
         shareScore={shareScore}
         handleClose={() => setShowModal(false)}
         gameHistory={gameHistory}
-        gameOver={isGameOver()}
+        gameOver={isGameOver(guesses)}
       />
       <HelpModal show={showHelpModal} handleClose={() => setShowHelpModal(false)} />
+      <GameOverModal show={showGameOverModal} handleClose={() => setShowGameOverModal(false)} />
     </div>
   )
 }
