@@ -51,41 +51,6 @@ export default function HistoryModal({
             </>
           )}
         </Modal.Body>
-        {gameOver && (
-          <Modal.Footer>
-            <Button
-              variant="primary"
-              ref={target}
-              onClick={() => {
-                shareScore(guesses)
-
-                const shareText = getShareText(guesses)
-                copyWithWebShare(shareText).then((msg) => {
-                  setShowTip(true)
-
-                  if (msg !== 'SUCCESS') {
-                    setTipText('Error')
-                  }
-                  setTimeout(() => {
-                    setShowTip(false)
-                  }, 1400)
-                })
-              }}
-            >
-              Compartir
-            </Button>
-            <Overlay target={target.current} show={showTip} placement="left">
-              {(props) => (
-                <Tooltip id="overlay-example" {...props}>
-                  Copiado
-                </Tooltip>
-              )}
-            </Overlay>
-            {/* <Button variant="primary" onClick={() => handleClose('confirm')}>
-            Cerrar
-          </Button> */}
-          </Modal.Footer>
-        )}
       </Modal>
     </>
   )

@@ -6,7 +6,6 @@ import {
   wordList,
   getTodaysNumber,
   isWordValid,
-  shareScore,
   copyWithWebShare,
   wordsHash,
   getShareText,
@@ -428,24 +427,32 @@ function App() {
                     className="btn btn-primary"
                     onClick={() => {
                       const shareText = getShareText(guesses)
-                      copyWithWebShare(shareText).then((msg) => {
-                        setSharedClicked(true)
-                        if (msg !== 'SUCCESS') {
-                          setShareError(msg)
-                        }
-                      })
+                      copyWithWebShare(shareText)
+                        .then((msg) => {
+                          setSharedClicked(true)
+                          if (msg !== 'SUCCESS') {
+                            setShareError(msg)
+                          }
+                        })
+                        .catch((err) => {
+                          setSharedClicked(true)
+                        })
                     }}
                   >
                     Compartir
                   </button>
                 </p>
-                {shareClicked && <p className="error">{shareError}</p>}
+                {/* {shareClicked && <p className="error">{shareError}</p>} */}
               </div>
             </>
           )}
           <div className="">
             <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
           </div>
+          <GameOverModal
+            show={showGameOverModal}
+            handleClose={() => setShowGameOverModal(false)}
+          />
         </div>
       )}
 
@@ -460,13 +467,11 @@ function App() {
       <HistoryModal
         guesses={guesses}
         show={showModal}
-        shareScore={shareScore}
         handleClose={() => setShowModal(false)}
         gameHistory={gameHistory}
         gameOver={isGameOver(guesses)}
       />
       <HelpModal show={showHelpModal} handleClose={() => setShowHelpModal(false)} />
-      <GameOverModal show={showGameOverModal} handleClose={() => setShowGameOverModal(false)} />
     </div>
   )
 }
