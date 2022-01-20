@@ -141,9 +141,8 @@ export async function copyWithWebShare(text) {
   } else if (navigator.clipboard) {
     return navigator.clipboard.writeText(text)
   } else {
-    return 'SUCCESS'
-    console.log('No navigator share available')
     return 'No se ha podido compartir :('
+    console.log('No navigator share available')
   }
 }
 
