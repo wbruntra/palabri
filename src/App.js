@@ -17,6 +17,7 @@ import Navbar from './Navbar'
 import Guess from './Guess'
 import HelpModal from './HelpModal'
 import GameOverModal from './WinnerModal'
+import SharingModal from './SharingModal'
 
 const config = {
   maxListLength: 20,
@@ -357,93 +358,104 @@ function App() {
           setShowHelpModal(true)
         }}
       />
-      <div className="d-flex flex-column App">
-        <div className="d-flex justify-content-center mb-3">
-          <div className="guess-list d-flex flex-column">
-            {guesses.map((guess, i) => {
-              return (
-                <div key={`guess-${i}`}>
-                  <Guess guess={guess} />
+
+      {!shareClicked && (
+        <div className="d-flex flex-column App">
+          <div className="d-flex justify-content-center mb-3">
+            <div className="guess-list d-flex flex-column">
+              {guesses.map((guess, i) => {
+                return (
+                  <div key={`guess-${i}`}>
+                    <Guess guess={guess} />
+                  </div>
+                )
+              })}
+              {!isGameOver(guesses) && (
+                <div>
+                  <Guess guess={{ word: word.concat('------').slice(0, 6), key: '......' }} />
                 </div>
-              )
-            })}
-            {!isGameOver(guesses) && (
-              <div>
-                <Guess guess={{ word: word.concat('------').slice(0, 6), key: '......' }} />
+              )}
+              {renderBlanks()}
+            </div>
+          </div>
+          {!isGameOver(guesses) && (
+            <>
+              <div className="d-none d-md-block">
+                <form className="entry-form mb-3" onSubmit={addGuess}>
+                  <fieldset className="mb-2">
+                    <input
+                      type="text"
+                      autoFocus
+                      ref={inputEl}
+                      value={word}
+                      onChange={(e) => {
+                        if (victory || guesses.length === 6) {
+                          return null
+                        }
+                        changeWord(e.target.value.toUpperCase())
+                      }}
+                      placeholder="palabra"
+                    />
+                  </fieldset>
+                  <input className="btn btn-primary" type="submit" value="Comprobar" />
+                </form>
               </div>
-            )}
-            {renderBlanks()}
+
+              {error !== '' ? (
+                <p className="error">{error}</p>
+              ) : (
+                <p className="text-bgcolor">No error right now</p>
+              )}
+            </>
+          )}
+
+          {isGameOver(guesses) && (
+            <>
+              <div>
+                {victory && (
+                  <div>
+                    <p>Felicidades! Has ganado.</p>
+                  </div>
+                )}
+                {!victory && guesses.length >= 6 && (
+                  <div>
+                    <p>Ya llevas 6 intentos. Has perdido :(</p>
+                  </div>
+                )}
+                <p>La palabra era: {answer}</p>
+                <p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      const shareText = getShareText(guesses)
+                      copyWithWebShare(shareText).then((msg) => {
+                        setSharedClicked(true)
+                        if (msg !== 'SUCCESS') {
+                          setShareError(msg)
+                        }
+                      })
+                    }}
+                  >
+                    Compartir
+                  </button>
+                </p>
+                {shareClicked && <p className="error">{shareError}</p>}
+              </div>
+            </>
+          )}
+          <div className="">
+            <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
           </div>
         </div>
-        {!isGameOver(guesses) && (
-          <>
-            <div className="d-none d-md-block">
-              <form className="entry-form mb-3" onSubmit={addGuess}>
-                <fieldset className="mb-2">
-                  <input
-                    type="text"
-                    autoFocus
-                    ref={inputEl}
-                    value={word}
-                    onChange={(e) => {
-                      if (victory || guesses.length === 6) {
-                        return null
-                      }
-                      changeWord(e.target.value.toUpperCase())
-                    }}
-                    placeholder="palabra"
-                  />
-                </fieldset>
-                <input className="btn btn-primary" type="submit" value="Comprobar" />
-              </form>
-            </div>
+      )}
 
-            {error !== '' ? (
-              <p className="error">{error}</p>
-            ) : (
-              <p className="text-bgcolor">No error right now</p>
-            )}
-          </>
-        )}
-
-        {isGameOver(guesses) && (
-          <>
-            <div>
-              {victory && (
-                <div>
-                  <p>Felicidades! Has ganado.</p>
-                </div>
-              )}
-              {!victory && guesses.length >= 6 && (
-                <div>
-                  <p>Ya llevas 6 intentos. Has perdido :(</p>
-                </div>
-              )}
-              <p>La palabra era: {answer}</p>
-              <p>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setSharedClicked(true)
-                    const shareText = getShareText(guesses)
-                    copyWithWebShare(shareText).then((msg) => {
-                      if (msg !== 'SUCCESS') {
-                        setShareError(msg)
-                      }
-                    })
-                  }}
-                >
-                  Compartir
-                </button>
-              </p>
-              {shareClicked && <p className="error">{shareError}</p>}
-            </div>
-          </>
-        )}
-        <div className="">
-          <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
-        </div>
-      </div>
+      <SharingModal
+        shareText={getShareText(guesses)}
+        show={shareClicked}
+        handleClose={() => {
+          setSharedClicked(false)
+        }}
+      />
 
       <HistoryModal
         guesses={guesses}
