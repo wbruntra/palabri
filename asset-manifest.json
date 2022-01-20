@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/palabri/static/css/main.2075939a.css",
-    "main.js": "/palabri/static/js/main.b8f640bc.js",
+    "main.js": "/palabri/static/js/main.50fbb3d3.js",
     "static/js/787.b94c06bc.chunk.js": "/palabri/static/js/787.b94c06bc.chunk.js",
     "index.html": "/palabri/index.html",
     "main.2075939a.css.map": "/palabri/static/css/main.2075939a.css.map",
-    "main.b8f640bc.js.map": "/palabri/static/js/main.b8f640bc.js.map",
+    "main.50fbb3d3.js.map": "/palabri/static/js/main.50fbb3d3.js.map",
     "787.b94c06bc.chunk.js.map": "/palabri/static/js/787.b94c06bc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2075939a.css",
-    "static/js/main.b8f640bc.js"
+    "static/js/main.50fbb3d3.js"
   ]
 }
