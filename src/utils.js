@@ -100,26 +100,11 @@ export const evaluateToString = (guess, answer) => {
   return result.join('')
 }
 
-// const s = 'HABÍAN'
-
-// const e = evaluate(s, 'MENTIA')
-
-// const c = getCanonical(s)
-// console.log(e)
-
 export const squares = {
   '-': '⬛',
   Y: '🟨',
   G: '🟩',
   white: '⬜',
-}
-
-export async function copyTextToClipboard(text) {
-  if ('clipboard' in navigator) {
-    return await navigator.clipboard.writeText(text)
-  } else {
-    return document.execCommand('copy', true, text)
-  }
 }
 
 export async function copyWithWebShare(text) {
@@ -142,7 +127,6 @@ export async function copyWithWebShare(text) {
     return navigator.clipboard.writeText(text)
   } else {
     return 'No se ha podido compartir :('
-    console.log('No navigator share available')
   }
 }
 
@@ -157,19 +141,6 @@ export const getShareText = (guesses) => {
 ${results.join('\n')}`
 
   return shareText
-}
-
-export const shareScore = (guesses) => {
-  const results = []
-  for (const guess of guesses) {
-    const key = guess.key.split('').map((k) => squares[k])
-    results.push(key.join(''))
-  }
-  const shareText = `Palabrí ${todaysNumber} ${guesses.length}/6
-  
-${results.join('\n')}`
-
-  return copyTextToClipboard(shareText)
 }
 
 export const getStorageKey = () => {
