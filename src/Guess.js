@@ -10,6 +10,9 @@ export default function Guess({ guess }) {
       classes.push('yellow')
     }
     if (key === '-') {
+      classes.push('missed-guess')
+    }
+    if (key === '.') {
       classes.push('white')
     }
     if (letter === '-') {

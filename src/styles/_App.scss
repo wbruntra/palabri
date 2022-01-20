@@ -28,12 +28,13 @@ ul {
 }
 
 .box {
-  /* height: 24px;
-    width: 16px; */
   padding: 4px 14px;
   display: inline-block;
   margin-left: 8px;
-  /* color: black; */
+
+  &.missed-guess {
+    background-color: #4b4f64 !important;
+  }
 }
 
 .error {

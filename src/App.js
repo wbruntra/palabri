@@ -330,7 +330,7 @@ function App() {
       .map((x, i) => {
         return (
           <div key={`guess-${i}`}>
-            <Guess guess={{ word: '------', key: '------' }} />
+            <Guess guess={{ word: '------', key: '......' }} />
           </div>
         )
       })
@@ -369,7 +369,7 @@ function App() {
             })}
             {!isGameOver(guesses) && (
               <div>
-                <Guess guess={{ word: word.concat('------').slice(0, 6), key: '------' }} />
+                <Guess guess={{ word: word.concat('------').slice(0, 6), key: '......' }} />
               </div>
             )}
             {renderBlanks()}
