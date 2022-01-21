@@ -324,23 +324,6 @@ function App() {
     inputEl.current.focus()
   }
 
-  const renderBlanks = () => {
-    let blanksNeeded = config.maxTries - guesses.length
-    blanksNeeded = isGameOver(guesses) ? blanksNeeded : blanksNeeded - 1
-    if (blanksNeeded <= 0) {
-      return null
-    }
-    return Array(blanksNeeded)
-      .fill(1)
-      .map((x, i) => {
-        return (
-          <div key={`guess-${i}`}>
-            <Guess guess={{ word: '------', key: '......' }} />
-          </div>
-        )
-      })
-  }
-
   const changeWord = (newWord) => {
     if (newWord.length <= 6) {
       setWord(newWord)
@@ -350,7 +333,7 @@ function App() {
   }
 
   const renderGuessColumn = () => {
-    return [
+    let result = [
       ...guesses.map((guess, i) => {
         return (
           <div key={`guess-${i}`}>
@@ -358,17 +341,20 @@ function App() {
           </div>
         )
       }),
-      <>
-        {!isGameOver(guesses) && (
-          <div className="active-guess">
-            <Guess
-              guess={{ word: word.concat('------').slice(0, 6), key: '......' }}
-              active={true}
-              movingForward={movingForward}
-            />
-          </div>
-        )}
-      </>,
+    ]
+    if (!isGameOver(guesses)) {
+      result.push(
+        <div key={'active-guess'} className="active-guess">
+          <Guess
+            guess={{ word: word.concat('------').slice(0, 6), key: '......' }}
+            active={true}
+            movingForward={movingForward}
+          />
+        </div>,
+      )
+    }
+    result = [
+      ...result,
       ...Array(6)
         .fill(1)
         .map((x, i) => {
@@ -379,6 +365,8 @@ function App() {
           )
         }),
     ].slice(0, 6)
+
+    return result
   }
 
   const victory = isVictory(guesses)
