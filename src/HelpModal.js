@@ -20,11 +20,12 @@ export default function HelpModal({ show, handleClose }) {
             La A es correcta y en la posición correcta. La U es correcta pero debe estar en otra
             posición.
           </p>
+          <hr />
           <p>Los acentos no aparecen hasta que hayas adivinado la palabra entera.</p>
           <p>
-            Palabras válidas: la palabra puede ser sustantivo en singular o plural. Si es verbo se
-            usa el infinitivo o el participio, no habrá conjugaciones raras (a no ser que haya, por
-            ejemplo, un sustantivo que se escribe igual).
+            <span className="fw-bold">Palabras válidas:</span> la palabra puede ser sustantivo o adjectivo en singular
+            o plural. En caso de un verbo, se usa el infinitivo o el participio, no habrá conjugaciones
+            raras (a no ser que haya, por ejemplo, un sustantivo que se escribe igual).
           </p>
         </Modal.Body>
       </Modal>
