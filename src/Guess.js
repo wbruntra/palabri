@@ -36,12 +36,6 @@ export default function Guess({ guess, active, movingForward }) {
           styles.animation = `jump .35s`
           styles.animationDelay = `${0.08 * i}s`
         }
-        if (guess.word === 'CONTRA') {
-          console.log(active)
-          console.log(movingForward)
-          console.log(getLastLetterIndex())
-          console.log(i)
-        }
         const shouldPop = active && movingForward && getLastLetterIndex() === i
         return (
           <div
