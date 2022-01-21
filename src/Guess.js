@@ -1,5 +1,12 @@
-export default function Guess({ guess }) {
+export default function Guess({ guess, active, movingForward }) {
   const isWinner = guess.key === 'GGGGGG'
+
+  const getLastLetterIndex = () => {
+    if (guess.word.indexOf('-') !== -1) {
+      return guess.word.indexOf('-') - 1
+    }
+    return guess.word.length - 1
+  }
 
   const getLetterClasses = (letter, key) => {
     let classes = ['box']
@@ -22,15 +29,26 @@ export default function Guess({ guess }) {
   }
 
   return (
-    <div className="guess">
+    <div className={`guess`}>
       {guess.key.split('').map((c, i) => {
         const styles = {}
         if (isWinner) {
           styles.animation = `jump .35s`
           styles.animationDelay = `${0.08 * i}s`
         }
+        if (guess.word === 'CONTRA') {
+          console.log(active)
+          console.log(movingForward)
+          console.log(getLastLetterIndex())
+          console.log(i)
+        }
+        const shouldPop = active && movingForward && getLastLetterIndex() === i
         return (
-          <div key={`guess-${i}`} style={styles} className={getLetterClasses(guess.word[i], c)}>
+          <div
+            key={`guess-${i}`}
+            style={styles}
+            className={`${getLetterClasses(guess.word[i], c)} ${shouldPop ? 'pop' : ''}`}
+          >
             {guess.word[i]}
           </div>
         )

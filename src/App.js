@@ -24,7 +24,7 @@ const config = {
   initialHistory: [0, 0, 0, 0, 0, 0, 0],
 }
 
-const Keyboard = ({ guesses, word, setWord, addGuess }) => {
+const Keyboard = ({ guesses, word, setWord, addGuess, setMovingForward }) => {
   const getLetterStatus = (guesses) => {
     let result = {}
 
@@ -77,6 +77,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
           return (
             <div
               onClick={() => {
+                setMovingForward(true)
                 setWord(word + k)
               }}
               key={`key-${k}`}
@@ -92,6 +93,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
           return (
             <div
               onClick={() => {
+                setMovingForward(true)
                 setWord(word + k)
               }}
               key={`key-${k}`}
@@ -118,6 +120,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
           return (
             <div
               onClick={() => {
+                setMovingForward(true)
                 setWord(word + k)
               }}
               key={`key-${k}`}
@@ -131,6 +134,7 @@ const Keyboard = ({ guesses, word, setWord, addGuess }) => {
         <div className="keyboard-key">
           <span
             onClick={() => {
+              setMovingForward(false)
               setWord(word.slice(0, -1))
             }}
             className="material-icons"
@@ -173,6 +177,7 @@ function App() {
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
   const [shareError, setShareError] = useState('')
   const [showGameOverModal, setShowGameOverModal] = useState(false)
+  const [movingForward, setMovingForward] = useState(true)
 
   const [answer, setAnswer] = useState(wordList[getWordIndex()])
 
@@ -344,6 +349,38 @@ function App() {
     }
   }
 
+  const renderGuessColumn = () => {
+    return [
+      ...guesses.map((guess, i) => {
+        return (
+          <div key={`guess-${i}`}>
+            <Guess guess={guess} />
+          </div>
+        )
+      }),
+      <>
+        {!isGameOver(guesses) && (
+          <div className="active-guess">
+            <Guess
+              guess={{ word: word.concat('------').slice(0, 6), key: '......' }}
+              active={true}
+              movingForward={movingForward}
+            />
+          </div>
+        )}
+      </>,
+      ...Array(6)
+        .fill(1)
+        .map((x, i) => {
+          return (
+            <div key={`blank-guess-${i}`}>
+              <Guess guess={{ word: '------', key: '......' }} />
+            </div>
+          )
+        }),
+    ].slice(0, 6)
+  }
+
   const victory = isVictory(guesses)
 
   return (
@@ -361,21 +398,7 @@ function App() {
       {!shareClicked && (
         <div className="d-flex flex-column App">
           <div className="d-flex justify-content-center mb-3">
-            <div className="guess-list d-flex flex-column">
-              {guesses.map((guess, i) => {
-                return (
-                  <div key={`guess-${i}`}>
-                    <Guess guess={guess} />
-                  </div>
-                )
-              })}
-              {!isGameOver(guesses) && (
-                <div>
-                  <Guess guess={{ word: word.concat('------').slice(0, 6), key: '......' }} />
-                </div>
-              )}
-              {renderBlanks()}
-            </div>
+            <div className="guess-list d-flex flex-column">{renderGuessColumn()}</div>
           </div>
           {!isGameOver(guesses) && (
             <>
@@ -391,6 +414,7 @@ function App() {
                         if (victory || guesses.length === 6) {
                           return null
                         }
+                        setMovingForward(e.target.value !== word.slice(0, -1))
                         changeWord(e.target.value.toUpperCase())
                       }}
                       placeholder="palabra"
@@ -447,7 +471,13 @@ function App() {
             </>
           )}
           <div className="">
-            <Keyboard word={word} setWord={changeWord} guesses={guesses} addGuess={addGuess} />
+            <Keyboard
+              word={word}
+              setWord={changeWord}
+              guesses={guesses}
+              addGuess={addGuess}
+              setMovingForward={setMovingForward}
+            />
           </div>
           <GameOverModal
             show={showGameOverModal}
