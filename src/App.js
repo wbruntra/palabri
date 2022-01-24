@@ -178,7 +178,6 @@ function App() {
   const [shareError, setShareError] = useState('')
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [movingForward, setMovingForward] = useState(true)
-  const [allowAnimations, setAllowAnimations] = useState(true)
 
   const [answer, setAnswer] = useState(wordList[getWordIndex()])
 
@@ -216,10 +215,9 @@ function App() {
       })
       setGuesses(newGuesses)
       if (isGameOver(newGuesses)) {
-        setAllowAnimations(false)
         setTimeout(() => {
           setShowGameOverModal(true)
-        }, 2500)
+        }, 1500)
       }
     }
   }
@@ -338,12 +336,8 @@ function App() {
     let result = [
       ...guesses.map((guess, i) => {
         return (
-          <div key={`final-guess-${i}`}>
-            <Guess
-              allowAnimations={allowAnimations}
-              guess={guess}
-              lastGuess={i === guesses.length - 1}
-            />
+          <div key={`guess-${i}`}>
+            <Guess guess={guess} />
           </div>
         )
       }),
@@ -361,7 +355,7 @@ function App() {
     }
     result = [
       ...result,
-      ...Array(7)
+      ...Array(6)
         .fill(1)
         .map((x, i) => {
           return (
