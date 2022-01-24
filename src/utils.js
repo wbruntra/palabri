@@ -76,9 +76,12 @@ const replaceAtIndex = (str, idx) => {
   return newString.join('')
 }
 
+/**
+ * @param {string} guess - Guessed word
+ * @param {string} answer - Correct answer
+ */
 export const evaluateToString = (guess, answer) => {
   let remainingAnswer = getCanonical(answer.slice())
-  // console.log(remainingAnswer)
   const result = []
   for (let i = 0; i < guess.length; i++) {
     if (guess[i] === remainingAnswer[i]) {
