@@ -23,7 +23,6 @@ ul {
 
 .delete {
   margin-left: 36px;
-  /* padding-bottom: 8px; */
   cursor: pointer;
 }
 
@@ -31,6 +30,7 @@ ul {
   padding: 4px 14px;
   display: inline-block;
   margin-left: 8px;
+  width: auto;
 
   &.missed-guess {
     background-color: #4b4f64 !important;
