@@ -16,11 +16,6 @@
   }
 }
 
-.pop {
-  animation-name: PopIn;
-  animation-duration: 150ms;
-}
-
 @keyframes PopIn {
   from {
     transform: scale(0.8);
@@ -31,4 +26,9 @@
     transform: scale(1.1);
     opacity: 1;
   }
+}
+
+.pop {
+  animation-name: PopIn;
+  animation-duration: 150ms;
 }
