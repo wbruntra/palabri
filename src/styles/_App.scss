@@ -27,10 +27,10 @@ ul {
 }
 
 .box {
-  padding: 4px 14px;
   display: inline-block;
   margin-left: 8px;
-  width: auto;
+  padding: 4px 14px !important;
+  width: auto !important;
 
   &.missed-guess {
     background-color: #4b4f64 !important;
