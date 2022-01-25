@@ -29,7 +29,7 @@ function Flip({ letter, letterKey, position }) {
   useEffect(() => {
     timer.current = setTimeout(() => {
       setFlip(true)
-    }, position * 280)
+    }, position * 250)
 
     return () => {
       clearInterval(timer.current)
@@ -79,7 +79,7 @@ export default function Guess({ guess, active, movingForward, lastGuess, allowAn
       {guess.key.split('').map((c, i) => {
         if (allowAnimations && useJump) {
           const styles = {}
-          styles.animation = `jump .35s`
+          styles.animation = `jump .3s`
           styles.animationDelay = `${0.08 * i}s`
 
           return (

@@ -387,6 +387,8 @@ function App() {
         toggleHelpModal={() => {
           setShowHelpModal(true)
         }}
+        gameOver={isGameOver(guesses)}
+        toggleGameOverModal={() => setShowGameOverModal(true)}
       />
 
       {!shareClicked && (
@@ -429,17 +431,6 @@ function App() {
           {isGameOver(guesses) && (
             <>
               <div>
-                {victory && (
-                  <div>
-                    <p>Felicidades! Has ganado.</p>
-                  </div>
-                )}
-                {!victory && guesses.length >= 6 && (
-                  <div>
-                    <p>Ya llevas 6 intentos. Has perdido :(</p>
-                  </div>
-                )}
-                <p>La palabra era: {answer}</p>
                 <p>
                   <button
                     className="btn btn-primary"
@@ -476,6 +467,8 @@ function App() {
           <GameOverModal
             show={showGameOverModal}
             handleClose={() => setShowGameOverModal(false)}
+            victory={victory}
+            answer={answer}
           />
         </div>
       )}

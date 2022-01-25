@@ -4,7 +4,7 @@ import { sum } from 'lodash'
 import Guess from './Guess'
 import { getTodaysNumber } from './utils'
 
-export default function GameOverModal({ show, handleClose }) {
+export default function GameOverModal({ show, handleClose, victory, answer }) {
   const [timeLeft, setTimeLeft] = useState('')
 
   useEffect(() => {
@@ -37,6 +37,9 @@ export default function GameOverModal({ show, handleClose }) {
           <Modal.Title>Fin de Partida</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-center">
+          {victory ? <p>Felicidades! Has ganado.</p> : <p>Has perdido :(</p>}
+          <p>La palabra era: {answer}</p>
+
           <p>
             Ya has terminado la partida de hoy. Espero que te lo hayas pasado bien. Comparte con
             tus amigos!
