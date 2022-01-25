@@ -29,19 +29,23 @@ function Flip({ letter, letterKey, position }) {
   useEffect(() => {
     timer.current = setTimeout(() => {
       setFlip(true)
-    }, position * 250)
+    }, 100)
 
     return () => {
       clearInterval(timer.current)
     }
   })
 
+  const style = {
+    transitionDelay: `${240 * position}ms`,
+  }
+
   return (
     <Flippy flipDirection="horizontal" isFlipped={shouldFlip}>
-      <FrontSide className="box white">
+      <FrontSide style={style} className="box white">
         <div> {letter}</div>
       </FrontSide>
-      <BackSide className={getLetterClasses(letter, letterKey)}>
+      <BackSide style={style} className={getLetterClasses(letter, letterKey)}>
         <div ref={ref}>{letter}</div>
       </BackSide>
     </Flippy>
