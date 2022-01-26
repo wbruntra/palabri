@@ -1,21 +1,20 @@
-// import './App.css'
-import { useState, useRef, useEffect } from 'react'
 import {
-  getCanonical,
+  copyWithWebShare,
   evaluateToString,
-  wordList,
+  getCanonical,
+  getShareText,
   getTodaysNumber,
   isWordValid,
-  copyWithWebShare,
+  wordList,
   wordsHash,
-  getShareText,
 } from './utils'
+import { useEffect, useRef, useState } from 'react'
 
-import HistoryModal from './HistoryModal'
-import Navbar from './Navbar'
+import GameOverModal from './WinnerModal'
 import Guess from './Guess'
 import HelpModal from './HelpModal'
-import GameOverModal from './WinnerModal'
+import HistoryModal from './HistoryModal'
+import Navbar from './Navbar'
 import SharingModal from './SharingModal'
 
 const config = {
@@ -423,7 +422,7 @@ function App() {
               {error !== '' ? (
                 <p className="error">{error}</p>
               ) : (
-                <p className="text-bgcolor">No error right now</p>
+                <p className="text-bgcolor">Adelante</p>
               )}
             </>
           )}
@@ -451,7 +450,6 @@ function App() {
                     Compartir
                   </button>
                 </p>
-                {/* {shareClicked && <p className="error">{shareError}</p>} */}
               </div>
             </>
           )}

@@ -1,7 +1,5 @@
-import { Modal, Button, Overlay, Tooltip } from 'react-bootstrap'
-import { useState, useRef } from 'react'
-import { sum } from 'lodash'
 import Guess from './Guess'
+import { Modal } from 'react-bootstrap'
 
 export default function HelpModal({ show, handleClose }) {
   return (

@@ -1,21 +1,10 @@
-import { Modal, Button, Overlay, Tooltip } from 'react-bootstrap'
-import { useState, useRef } from 'react'
+import { Modal } from 'react-bootstrap'
 import { sum } from 'lodash'
-import { getShareText, copyWithWebShare } from './utils'
 
-export default function HistoryModal({
-  show,
-  handleClose,
-  guesses,
-  answer,
-  shareScore,
-  gameHistory,
-  gameOver,
-}) {
-  const [showTip, setShowTip] = useState(false)
-  const target = useRef(null)
+export default function HistoryModal({ show, handleClose, gameHistory }) {
+  // const gameHistory = [0, 1, 1, 3, 4, 4, 2]
   const gamesPlayed = sum(gameHistory) > 0 ? sum(gameHistory) : 1
-  const [tipText, setTipText] = useState('Copied!')
+  // const gamesPlayed = sum(gameHistory) > 0 ? sum(gameHistory) : 1
 
   return (
     <>
@@ -34,16 +23,24 @@ export default function HistoryModal({
               <p>
                 Has jugado {gamesPlayed} {gamesPlayed > 1 ? 'veces' : 'vez'}
               </p>
-              <div className="d-flex flex-column">
+              <div className="history-graph d-flex flex-column">
                 <p>Intentos para adivinar la palabra:</p>
                 {gameHistory.map((h, i) => {
                   if (i < 1) {
                     return null
                   }
                   return (
-                    <div key={`history-${i}`} className="d-flex flex-row">
-                      <div>{i}</div>:<div className="ms-2">{h}</div>{' '}
-                      <div className="ms-2">({Math.round((100 * h) / gamesPlayed)}%)</div>
+                    <div
+                      key={`history-item-${i}`}
+                      className="history-item d-flex flex-row"
+                      style={{ width: '100%' }}
+                    >
+                      <div className="me-2 pt-0">{i}</div>
+                      <div
+                        className="history-bar"
+                        style={{ flexBasis: `${Math.floor(.8 * (100 * h) / gamesPlayed)}%` }}
+                      />
+                      <p className="ms-2">{`${Math.floor((100 * h) / gamesPlayed)}%`}</p>
                     </div>
                   )
                 })}

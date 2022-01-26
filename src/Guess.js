@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react'
-import Flippy, { FrontSide, BackSide } from 'react-flippy'
+import Flippy, { BackSide, FrontSide } from 'react-flippy'
+import { useEffect, useRef, useState } from 'react'
 
 const getLetterClasses = (letter, key) => {
   let classes = ['box']
@@ -23,16 +23,17 @@ const getLetterClasses = (letter, key) => {
 
 function Flip({ letter, letterKey, position }) {
   const ref = useRef()
-  const timer = useRef()
   const [shouldFlip, setFlip] = useState(false)
 
   useEffect(() => {
-    timer.current = setTimeout(() => {
+    let timer
+
+    timer = setTimeout(() => {
       setFlip(true)
     }, 100)
 
     return () => {
-      clearInterval(timer.current)
+      clearInterval(timer)
     }
   })
 
@@ -55,19 +56,19 @@ function Flip({ letter, letterKey, position }) {
 export default function Guess({ guess, active, movingForward, lastGuess, allowAnimations }) {
   const [useJump, setUseJump] = useState(false)
   const isWinner = guess.key === 'GGGGGG'
-  const timer = useRef()
 
   useEffect(() => {
     const isWinner = guess.key === 'GGGGGG'
+    let timer
 
-    setTimeout(() => {
+    timer = setTimeout(() => {
       if (isWinner) {
         setUseJump(true)
       }
     }, 1850)
 
     return () => {
-      clearInterval(timer.current)
+      clearInterval(timer)
     }
   })
 

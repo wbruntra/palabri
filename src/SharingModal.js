@@ -1,7 +1,4 @@
-import { Modal, Button, Overlay, Tooltip } from 'react-bootstrap'
-import { useState, useRef } from 'react'
-import { sum } from 'lodash'
-import Guess from './Guess'
+import { Modal } from 'react-bootstrap'
 
 export default function HelpModal({ show, handleClose, shareText }) {
   return (
@@ -12,8 +9,7 @@ export default function HelpModal({ show, handleClose, shareText }) {
         </Modal.Header>
         <Modal.Body>
           <p>
-            En teoría, el texto ya ha sido
-            copiado a tu portapapeles. Por si acaso, lo tienes aquí.
+            En teoría, el texto ya ha sido copiado a tu portapapeles. Por si acaso, lo tienes aquí.
           </p>
           <pre>{shareText}</pre>
         </Modal.Body>

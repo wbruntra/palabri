@@ -2,3 +2,24 @@
   color: white;
   background-color: #282c34;
 }
+
+.history-graph {
+  width: 100%;
+
+  .history-item {
+    height: 24px;
+    margin-bottom: 15px;
+
+    .history-bar {
+      background: #8650ac; /* fallback for old browsers */
+
+      background: linear-gradient(to left, #9b4dca, #8441ac);
+    }
+
+    p {
+      // margin: 0;
+      padding-top: 2px;
+      font-size: 0.9em;
+    }
+  }
+}

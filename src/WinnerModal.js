@@ -1,8 +1,6 @@
-import { Modal, Button, Overlay, Tooltip } from 'react-bootstrap'
-import { useState, useRef, useEffect } from 'react'
-import { sum } from 'lodash'
-import Guess from './Guess'
-import { getTodaysNumber } from './utils'
+import { useEffect, useState } from 'react'
+
+import { Modal } from 'react-bootstrap'
 
 export default function GameOverModal({ show, handleClose, victory, answer }) {
   const [timeLeft, setTimeLeft] = useState('')
