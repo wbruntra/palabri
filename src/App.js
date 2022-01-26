@@ -171,11 +171,11 @@ function App() {
   const [error, setError] = useState('')
   const [shareClicked, setSharedClicked] = useState(false)
   const timer = useRef(null)
-  const [showModal, setShowModal] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
+  const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
   const [shareError, setShareError] = useState('')
-  const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [movingForward, setMovingForward] = useState(true)
   const [allowAnimations, setAllowAnimations] = useState(true)
 
@@ -234,6 +234,11 @@ function App() {
     }
   }
 
+  const reset = () => {
+    setShowGameOverModal(false)
+    setShowHistoryModal(false)
+  }
+
   useEffect(() => {
     loadGuesses(getStorageKey(), answer)
     loadHistory()
@@ -246,6 +251,7 @@ function App() {
         localStorage.setItem(storageKey, JSON.stringify([]))
         setGuesses([])
         // setTodaysNumber(getWordIndex())
+        reset()
 
         const newAnswer = wordList[getWordIndex()]
         setAnswer(newAnswer)
@@ -381,7 +387,7 @@ function App() {
       <Navbar
         todaysNumber={getWordIndex()}
         toggleModal={() => {
-          setShowModal(!showModal)
+          setShowHistoryModal(!showHistoryModal)
         }}
         toggleHelpModal={() => {
           setShowHelpModal(true)
@@ -481,8 +487,8 @@ function App() {
 
       <HistoryModal
         guesses={guesses}
-        show={showModal}
-        handleClose={() => setShowModal(false)}
+        show={showHistoryModal}
+        handleClose={() => setShowHistoryModal(false)}
         gameHistory={gameHistory}
         gameOver={isGameOver(guesses)}
       />

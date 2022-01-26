@@ -35,7 +35,7 @@ export default function GameOverModal({ show, handleClose, victory, answer }) {
           <Modal.Title>Fin de Partida</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-center">
-          {victory ? <p>Felicidades! Has ganado.</p> : <p>Has perdido :(</p>}
+          {victory ? <p>Felicidades! Has ganado.</p> : <p>Vaya! Has perdido :(</p>}
           <p>La palabra era: {answer}</p>
 
           <p>

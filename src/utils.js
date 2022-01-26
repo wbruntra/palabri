@@ -1,16 +1,15 @@
 import _ from 'lodash'
 import gen from 'random-seed'
-
+import officialWords from './data/valid-word-list-xl.json'
 // import words from './data/6-word-list.json'
 import words from './data/answers-word-list.json'
 
-import officialWords from './data/valid-word-list-xl.json'
 // import officialWords from './data/6-word-list-lg.json'
 
 const md5 = require('md5')
 
 const config = {
-  seed: 'cutsleaptbathed',
+  seed: 'eatencounting',
 }
 
 export const getTodaysNumber = () => {
