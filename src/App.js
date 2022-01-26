@@ -176,6 +176,7 @@ function App() {
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
   const [shareError, setShareError] = useState('')
+  const [showShareButton, setShowShareButton] = useState(false)
   const [movingForward, setMovingForward] = useState(true)
   const [allowAnimations, setAllowAnimations] = useState(true)
 
@@ -217,7 +218,7 @@ function App() {
       if (isGameOver(newGuesses)) {
         setAllowAnimations(false)
         setTimeout(() => {
-          setShowGameOverModal(true)
+          triggerGameOver()
         }, 2500)
       }
     }
@@ -237,6 +238,11 @@ function App() {
   const reset = () => {
     setShowGameOverModal(false)
     setShowHistoryModal(false)
+  }
+
+  const triggerGameOver = () => {
+    setShowGameOverModal(true)
+    setShowShareButton(true)
   }
 
   useEffect(() => {
@@ -315,8 +321,8 @@ function App() {
 
     if (isGameOver(newGuesses)) {
       setTimeout(() => {
-        setShowGameOverModal(true)
-      }, 4500)
+        triggerGameOver()
+      }, 4000)
     }
 
     if (wonGame) {
@@ -433,7 +439,7 @@ function App() {
             </>
           )}
 
-          {isGameOver(guesses) && (
+          {showShareButton && (
             <>
               <div>
                 <p>
