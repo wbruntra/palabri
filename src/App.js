@@ -169,13 +169,14 @@ function App() {
   const [word, setWord] = useState('')
   const inputEl = useRef(null)
   const [error, setError] = useState('')
-  const [shareClicked, setSharedClicked] = useState(false)
   const timer = useRef(null)
+  
   const [showHistoryModal, setShowHistoryModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [showGameOverModal, setShowGameOverModal] = useState(false)
   const [gameHistory, setGameHistory] = useState(config.initialHistory)
-  const [shareError, setShareError] = useState('')
+  
+  const [shareClicked, setSharedClicked] = useState(false)
   const [showShareButton, setShowShareButton] = useState(false)
   const [movingForward, setMovingForward] = useState(true)
   const [allowAnimations, setAllowAnimations] = useState(true)
@@ -238,6 +239,9 @@ function App() {
   const reset = () => {
     setShowGameOverModal(false)
     setShowHistoryModal(false)
+    setAllowAnimations(true)
+    setShowShareButton(false)
+    setSharedClicked(false)
   }
 
   const triggerGameOver = () => {
@@ -450,9 +454,6 @@ function App() {
                       copyWithWebShare(shareText)
                         .then((msg) => {
                           setSharedClicked(true)
-                          if (msg !== 'SUCCESS') {
-                            setShareError(msg)
-                          }
                         })
                         .catch((err) => {
                           setSharedClicked(true)
